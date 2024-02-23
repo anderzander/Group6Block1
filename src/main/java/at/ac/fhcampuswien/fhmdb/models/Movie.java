@@ -82,7 +82,7 @@ public class Movie {
         List<Genre> genreListForAvengers = new ArrayList<>();
         genreListForAvengers.add(new Genre("Action"));
         genreListForAvengers.add(new Genre("Science Fiction"));
-        Movie avengers = new Movie("Shrek",descriptionForAvengers, genreListForAvengers);
+        Movie avengers = new Movie("Avengers",descriptionForAvengers, genreListForAvengers);
         movies.add(avengers);
 
         return movies;
