@@ -78,6 +78,13 @@ public class Movie {
         Movie catchMeIfYouCan = new Movie("Catch me if you can", descriptionForCatchMeIfYouCan, genreListForCatchMeIfYouCan);
         movies.add(catchMeIfYouCan);
 
+        String descriptionForAvengers = "\"Avengers\" is a superhero film where members of the titular team unite to save the world from the powerful villain Loki and his alien army.";
+        List<Genre> genreListForAvengers = new ArrayList<>();
+        genreListForAvengers.add(new Genre("Action"));
+        genreListForAvengers.add(new Genre("Science Fiction"));
+        Movie avengers = new Movie("Shrek",descriptionForAvengers, genreListForAvengers);
+        movies.add(avengers);
+
         return movies;
     }
 }
