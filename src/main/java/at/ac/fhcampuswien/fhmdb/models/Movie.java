@@ -70,6 +70,14 @@ public class Movie {
         Movie shrek = new Movie("Shrek", descriptionForShrek, genreListForShrek);
         movies.add(shrek);
 
+        String descriptionForCatchMeIfYouCan ="\"Catch me if you can\" is a movie about Frank Abagnale Jr, a con man who poses as a pilot, doctor and a lawyer and cashes forged cheques worth millions before his 21st birthday, despite being constantly chased by FBI agent Carl Hanratty.";
+        List<Genre> genreListForCatchMeIfYouCan = new ArrayList<>();
+        genreListForCatchMeIfYouCan.add(new Genre("THRILLER"));
+        genreListForCatchMeIfYouCan.add(new Genre("COMEDY"));
+        genreListForCatchMeIfYouCan.add(new Genre("DRAMA"));
+        Movie catchMeIfYouCan = new Movie("Catch me if you can", descriptionForCatchMeIfYouCan, genreListForCatchMeIfYouCan);
+        movies.add(shrek);
+
         return movies;
     }
 }
