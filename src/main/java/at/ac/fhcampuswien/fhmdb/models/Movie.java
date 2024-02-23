@@ -76,7 +76,7 @@ public class Movie {
         genreListForCatchMeIfYouCan.add(new Genre("COMEDY"));
         genreListForCatchMeIfYouCan.add(new Genre("DRAMA"));
         Movie catchMeIfYouCan = new Movie("Catch me if you can", descriptionForCatchMeIfYouCan, genreListForCatchMeIfYouCan);
-        movies.add(shrek);
+        movies.add(catchMeIfYouCan);
 
         return movies;
     }
