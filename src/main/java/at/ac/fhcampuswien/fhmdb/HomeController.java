@@ -12,8 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class HomeController implements Initializable {
     @FXML
@@ -61,5 +60,18 @@ public class HomeController implements Initializable {
         });
 
 
+    }
+    public List<Movie> setFilteredBySearchField(List<Movie> movieList, String searchField){
+
+        Set<Movie> filteredMovieSetBySearchField = new HashSet<>();
+        String toSearch = searchField.toLowerCase();
+
+        for (Movie movie : movieList) {
+            if (movie.getTitle().toLowerCase().contains(toSearch) || movie.getDescription().toLowerCase().contains(toSearch)){
+                filteredMovieSetBySearchField.add(movie);
+            }
+        }
+
+        return new ArrayList<>(filteredMovieSetBySearchField);
     }
 }
