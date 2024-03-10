@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
@@ -12,6 +13,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.*;
+
+import static at.ac.fhcampuswien.fhmdb.models.Genre.getAllGenres;
 import java.util.*;
 
 public class HomeController implements Initializable {
@@ -29,10 +33,19 @@ public class HomeController implements Initializable {
 
     @FXML
     public JFXButton sortBtn;
+    @FXML
+    public JFXButton resetBtn;
 
-    public List<Movie> allMovies = Movie.initializeMovies();
 
-    private final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
+    public static final List<Movie> allMovies = Movie.initializeMovies();
+
+
+    private ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
+
+
+    public ObservableList<Movie> getObservableMovies() {
+        return observableMovies;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -44,27 +57,71 @@ public class HomeController implements Initializable {
 
         // TODO add genre filter items with genreComboBox.getItems().addAll(...)
         genreComboBox.setPromptText("Filter by Genre");
+        for (Genre genre : getAllGenres()) {
+            genreComboBox.getItems().add(genre.getGenreAsString());
+        }
 
         // TODO add event handlers to buttons and call the regarding methods
         // either set event handlers in the fxml file (onAction) or add them here
 
+
         // Sort button example:
-        sortBtn.setOnAction(actionEvent -> {
-            if (sortBtn.getText().equals("Sort (asc)")) {
-                // TODO sort observableMovies ascending
-                sortBtn.setText("Sort (desc)");
-            } else {
-                // TODO sort observableMovies descending
-                sortBtn.setText("Sort (asc)");
-            }
+        sortBtn.setOnAction(sortEvent -> {
+            sortObservableMovies(sortBtn.getText());
         });
 
+        resetBtn.setOnAction(actionEvent -> {
+            //TODO Text isn't grey!!
+            searchField.clear();
+            genreComboBox.setValue(null);
+
+            observableMovies.clear();
+
+            observableMovies.addAll(allMovies);
+            movieListView.setItems(observableMovies);// set data of observable list to list view
+
+            movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
+        });
+
+        searchBtn.setOnAction(sortEvent -> {
+            filterObservableMovies(searchField.getText(), (String) genreComboBox.getValue());
+        });
+
+    }
+
+    public void sortObservableMovies(String textFromSortBtn){
+        if(textFromSortBtn.equals("Sort (asc)")) {
+            // TODO sort observableMovies ascending
+            Collections.sort(observableMovies);
+            if (sortBtn != null){
+                sortBtn.setText("Sort (desc)");
+            }
+
+        } else {
+            // TODO sort observableMovies descending
+            observableMovies.sort(Collections.reverseOrder());
+            if (sortBtn != null){
+                sortBtn.setText("Sort (asc)");
+            }
+        }
+    }
+
+
+
+    public List<Movie> listFilteredByGenres(List<Movie> MovieListToFilter, String genreComboBox){
+
+        if (genreComboBox == null){
+            return new ArrayList<>(allMovies);
+        }
+
+
+        return new ArrayList<>(allMovies);
     }
 
     public void filterObservableMovies(String searchField, String genreComboBox) {
 
 
-        List<Movie> filteredByGenre = setFilteredByGenres(allMovies, genreComboBox);
+        List<Movie> filteredByGenre = listFilteredByGenres(allMovies, genreComboBox);
         List<Movie> filteredBySearchField = setFilteredBySearchField(allMovies, searchField);
 
 
@@ -81,6 +138,15 @@ public class HomeController implements Initializable {
 
     }
     public List<Movie> setFilteredBySearchField(List<Movie> movieList, String searchField){
+        Set<Movie> filteredMovieSetByGenre = new HashSet<>();
+
+        for (Movie movie : allMovies) {
+            for (Genre genre : movie.getGenres()) {
+                if (genre.getGenreAsString().equals(genreComboBox) && !filteredMovieSetByGenre.contains(movie)){
+                    filteredMovieSetByGenre.add(movie);
+                }
+            }
+        }
 
         Set<Movie> filteredMovieSetBySearchField = new HashSet<>();
         String toSearch = searchField.toLowerCase();
@@ -93,4 +159,7 @@ public class HomeController implements Initializable {
 
         return new ArrayList<>(filteredMovieSetBySearchField);
     }
+
+
 }
+

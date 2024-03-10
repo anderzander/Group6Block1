@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.fhmdb.ui;
 
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.Background;
@@ -14,6 +15,7 @@ public class MovieCell extends ListCell<Movie> {
     private final Label detail = new Label();
     private final Label genres = new Label();
     private final VBox layout = new VBox(title, detail, genres);
+    private double sceneWith;
 
     @Override
     protected void updateItem(Movie movie, boolean empty) {
@@ -21,6 +23,7 @@ public class MovieCell extends ListCell<Movie> {
 
         if (empty || movie == null) {
             setText(null);
+            setGraphic(null);
         } else {
             this.getStyleClass().add("movie-cell");
             title.setText(movie.getTitle());
@@ -39,8 +42,13 @@ public class MovieCell extends ListCell<Movie> {
             layout.setBackground(new Background(new BackgroundFill(Color.web("#454545"), null, null)));
 
             // layout
+
             title.fontProperty().set(title.getFont().font(20));
-            detail.setMaxWidth(this.getScene().getWidth() - 30);
+
+            if (this.getScene() != null){
+                sceneWith = this.getScene().getWidth();
+            }
+            detail.setMaxWidth(getCurrentSceneWidth() - 30);
             detail.setWrapText(true);
             layout.setPadding(new Insets(10));
             layout.spacingProperty().set(10);
@@ -48,5 +56,15 @@ public class MovieCell extends ListCell<Movie> {
             setGraphic(layout);
         }
     }
+
+    public double getCurrentSceneWidth(){
+
+        if (this.getScene() == null){
+            return this.sceneWith;
+        } else {
+            return this.getScene().getWidth();
+        }
+    }
+
 }
 

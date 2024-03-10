@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
-public class Movie {
+public class Movie implements Comparable<Movie> {
     private String title;
     private String description;
+
     private List<Genre> genres;
 
     public Movie(String title, String description, List<Genre> genres) {
@@ -15,6 +16,9 @@ public class Movie {
         this.genres = genres;
     }
 
+    public List<Genre> getGenres() {
+        return genres;
+    }
     public String getTitle() {
         return title;
     }
@@ -27,7 +31,7 @@ public class Movie {
         StringJoiner joiner = new StringJoiner(", ");
 
         for (Genre genre : this.genres) {
-            joiner.add(genre.getGenre());
+            joiner.add(genre.getGenreAsString());
         }
 
         return joiner.toString();
@@ -41,7 +45,7 @@ public class Movie {
                 "\"Interstellar\" is a visually stunning and emotionally gripping sci-fi epic that follows astronauts on a perilous journey through a wormhole in search of a new home for humanity, exploring themes of love, sacrifice, and the resilience of the human spirit.";
         List<Genre> genreListForInterstellar = new ArrayList<>();
         genreListForInterstellar.add(new Genre("ACTION"));
-        genreListForInterstellar.add(new Genre("SCIENCE_FICTION"));
+        genreListForInterstellar.add(new Genre("SCIENCE FICTION"));
         Movie interstellar = new Movie("Interstellar", descriptionForInterstellar, genreListForInterstellar);
         movies.add(interstellar);
 
@@ -49,7 +53,7 @@ public class Movie {
                 "\"The Matrix\" is a groundbreaking sci-fi action film directed by the Wachowskis, following a computer hacker who discovers the shocking truth about reality and joins a rebellion against sentient machines, blending mind-bending visual effects with philosophical themes of identity and control.";
         List<Genre> genreListForMatrix = new ArrayList<>();
         genreListForMatrix.add(new Genre("ACTION"));
-        genreListForMatrix.add(new Genre("SCIENCE_FICTION"));
+        genreListForMatrix.add(new Genre("SCIENCE FICTION"));
         Movie matrix = new Movie("The Matrix", descriptionForMatrix, genreListForMatrix);
         movies.add(matrix);
 
@@ -74,16 +78,22 @@ public class Movie {
         genreListForCatchMeIfYouCan.add(new Genre("THRILLER"));
         genreListForCatchMeIfYouCan.add(new Genre("COMEDY"));
         genreListForCatchMeIfYouCan.add(new Genre("DRAMA"));
-        Movie catchMeIfYouCan = new Movie("Catch me if you can", descriptionForCatchMeIfYouCan, genreListForCatchMeIfYouCan);
+        Movie catchMeIfYouCan = new Movie("Catch Me If You Can", descriptionForCatchMeIfYouCan, genreListForCatchMeIfYouCan);
         movies.add(catchMeIfYouCan);
 
         String descriptionForAvengers = "\"Avengers\" is a superhero film where members of the titular team unite to save the world from the powerful villain Loki and his alien army.";
         List<Genre> genreListForAvengers = new ArrayList<>();
-        genreListForAvengers.add(new Genre("Action"));
-        genreListForAvengers.add(new Genre("Science Fiction"));
+        genreListForAvengers.add(new Genre("ACTION"));
+        genreListForAvengers.add(new Genre("SCIENCE FICTION"));
         Movie avengers = new Movie("Avengers",descriptionForAvengers, genreListForAvengers);
         movies.add(avengers);
 
         return movies;
+    }
+
+    @Override
+    public int compareTo(Movie other) {
+        int compareInt = this.title.compareTo(other.title);
+        return Integer.compare(compareInt, 0);
     }
 }
