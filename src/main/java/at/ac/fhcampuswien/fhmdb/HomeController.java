@@ -50,7 +50,7 @@ public class HomeController implements Initializable {
 
         // Sort button example:
         sortBtn.setOnAction(actionEvent -> {
-            if(sortBtn.getText().equals("Sort (asc)")) {
+            if (sortBtn.getText().equals("Sort (asc)")) {
                 // TODO sort observableMovies ascending
                 sortBtn.setText("Sort (desc)");
             } else {
@@ -59,6 +59,25 @@ public class HomeController implements Initializable {
             }
         });
 
+    }
+
+    public void filterObservableMovies(String searchField, String genreComboBox) {
+
+
+        List<Movie> filteredByGenre = setFilteredByGenres(allMovies, genreComboBox);
+        List<Movie> filteredBySearchField = setFilteredBySearchField(allMovies, searchField);
+
+
+        filteredByGenre.retainAll(filteredBySearchField);
+
+        ObservableList<Movie> finishedFilteredList = FXCollections.observableArrayList();
+        finishedFilteredList.addAll(filteredByGenre);
+
+
+        movieListView.setItems(finishedFilteredList);   // set data of observable list to list view
+        movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
+
+        observableMovies = finishedFilteredList;
 
     }
     public List<Movie> setFilteredBySearchField(List<Movie> movieList, String searchField){
