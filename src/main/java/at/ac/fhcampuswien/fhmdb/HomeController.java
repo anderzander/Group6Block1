@@ -116,7 +116,7 @@ public class HomeController implements Initializable {
 
         Set<Movie> filteredMovieSetByGenre = new HashSet<>();
 
-        for (Movie movie : allMovies) {
+        for (Movie movie : MovieListToFilter) {
             for (Genre genre : movie.getGenres()) {
                 if (genre.getGenreAsString().equals(genreComboBox) && !filteredMovieSetByGenre.contains(movie)){
                     filteredMovieSetByGenre.add(movie);
