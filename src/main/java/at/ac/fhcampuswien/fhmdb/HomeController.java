@@ -114,8 +114,17 @@ public class HomeController implements Initializable {
             return new ArrayList<>(allMovies);
         }
 
+        Set<Movie> filteredMovieSetByGenre = new HashSet<>();
 
-        return new ArrayList<>(allMovies);
+        for (Movie movie : allMovies) {
+            for (Genre genre : movie.getGenres()) {
+                if (genre.getGenreAsString().equals(genreComboBox) && !filteredMovieSetByGenre.contains(movie)){
+                    filteredMovieSetByGenre.add(movie);
+                }
+            }
+        }
+
+        return new ArrayList<>(filteredMovieSetByGenre);
     }
 
     public void filterObservableMovies(String searchField, String genreComboBox) {
@@ -138,15 +147,6 @@ public class HomeController implements Initializable {
 
     }
     public List<Movie> setFilteredBySearchField(List<Movie> movieList, String searchField){
-        Set<Movie> filteredMovieSetByGenre = new HashSet<>();
-
-        for (Movie movie : allMovies) {
-            for (Genre genre : movie.getGenres()) {
-                if (genre.getGenreAsString().equals(genreComboBox) && !filteredMovieSetByGenre.contains(movie)){
-                    filteredMovieSetByGenre.add(movie);
-                }
-            }
-        }
 
         Set<Movie> filteredMovieSetBySearchField = new HashSet<>();
         String toSearch = searchField.toLowerCase();
