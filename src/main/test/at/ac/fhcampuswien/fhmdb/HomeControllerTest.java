@@ -103,6 +103,7 @@ class HomeControllerTest {
 
         assertEquals(expected, homeController.getObservableMovies());
 
+
     }
 
 
@@ -141,10 +142,8 @@ class HomeControllerTest {
         expected.add(movieA);
         expected.add(movieC);
 
-        Collections.sort(expected);
-        Collections.sort(actual);
-
-        assertEquals(expected, actual);
+        assertTrue(actual.containsAll(expected));
+        assertEquals(2, actual.size());
     }
 
     @Test
@@ -182,10 +181,9 @@ class HomeControllerTest {
         expected.add(movieB);
         expected.add(movieC);
 
-        Collections.sort(expected);
-        Collections.sort(actual);
 
-        assertEquals(expected, actual);
+        assertTrue(actual.containsAll(expected));
+        assertEquals(2, actual.size());
     }
 
 
