@@ -33,10 +33,8 @@ class HomeControllerTest {
         expected.add(a);
         expected.add(d);
 
-        Collections.sort(expected);
-        Collections.sort(actual);
-
-        assertEquals(expected, actual);
+        assertTrue(actual.containsAll(expected));
+        assertEquals(2, actual.size());
     }
 
     @Test
@@ -212,10 +210,8 @@ class HomeControllerTest {
         expected.add(c);
         expected.add(d);
 
-        Collections.sort(expected);
-        Collections.sort(actual);
-
-        assertEquals(expected, actual);
+        assertTrue(actual.containsAll(expected));
+        assertEquals(3, actual.size());
     }
 
 
