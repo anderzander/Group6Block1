@@ -26,7 +26,7 @@ class HomeControllerTest {
         sampleMovies.add(d);
 
         //when
-        List<Movie> actual = homeController.setFilteredBySearchField(sampleMovies, "aBc");
+        List<Movie> actual = homeController.listFilteredBySearchField(sampleMovies, "aBc");
 
         //then
         List<Movie> expected = new ArrayList<>();
@@ -206,7 +206,7 @@ class HomeControllerTest {
         sampleMovies.add(d);
 
         //when
-        List<Movie> actual = homeController.setFilteredBySearchField(sampleMovies, "MOVIE");
+        List<Movie> actual = homeController.listFilteredBySearchField(sampleMovies, "MOVIE");
 
         //then
         List<Movie> expected = new ArrayList<>();

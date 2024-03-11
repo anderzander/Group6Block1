@@ -16,7 +16,6 @@ import java.net.URL;
 import java.util.*;
 
 import static at.ac.fhcampuswien.fhmdb.models.Genre.getAllGenres;
-import java.util.*;
 
 public class HomeController implements Initializable {
     @FXML
@@ -106,7 +105,25 @@ public class HomeController implements Initializable {
         }
     }
 
+    public void filterObservableMovies(String searchField, String genreComboBox) {
 
+
+        List<Movie> list1 = listFilteredByGenres(allMovies, genreComboBox);
+        List<Movie> list2 = listFilteredBySearchField(allMovies, searchField);
+
+
+        list1.retainAll(list2);
+
+        ObservableList<Movie> finishedFilteredList = FXCollections.observableArrayList();
+        finishedFilteredList.addAll(list1);
+
+
+        movieListView.setItems(finishedFilteredList);   // set data of observable list to list view
+        movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
+
+        observableMovies = finishedFilteredList;
+
+    }
 
     public List<Movie> listFilteredByGenres(List<Movie> MovieListToFilter, String genreComboBox){
 
@@ -127,26 +144,7 @@ public class HomeController implements Initializable {
         return new ArrayList<>(filteredMovieSetByGenre);
     }
 
-    public void filterObservableMovies(String searchField, String genreComboBox) {
-
-
-        List<Movie> filteredByGenre = listFilteredByGenres(allMovies, genreComboBox);
-        List<Movie> filteredBySearchField = setFilteredBySearchField(allMovies, searchField);
-
-
-        filteredByGenre.retainAll(filteredBySearchField);
-
-        ObservableList<Movie> finishedFilteredList = FXCollections.observableArrayList();
-        finishedFilteredList.addAll(filteredByGenre);
-
-
-        movieListView.setItems(finishedFilteredList);   // set data of observable list to list view
-        movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
-
-        observableMovies = finishedFilteredList;
-
-    }
-    public List<Movie> setFilteredBySearchField(List<Movie> movieList, String searchField){
+    public List<Movie> listFilteredBySearchField(List<Movie> movieList, String searchField){
 
         Set<Movie> filteredMovieSetBySearchField = new HashSet<>();
         String toSearch = searchField.toLowerCase();
