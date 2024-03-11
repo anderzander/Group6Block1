@@ -45,7 +45,7 @@ public class Movie implements Comparable<Movie> {
                 "\"Interstellar\" is a visually stunning and emotionally gripping sci-fi epic that follows astronauts on a perilous journey through a wormhole in search of a new home for humanity, exploring themes of love, sacrifice, and the resilience of the human spirit.";
         List<Genre> genreListForInterstellar = new ArrayList<>();
         genreListForInterstellar.add(new Genre("ACTION"));
-        genreListForInterstellar.add(new Genre("SCIENCE FICTION"));
+        genreListForInterstellar.add(new Genre("SCIENCE_FICTION"));
         Movie interstellar = new Movie("Interstellar", descriptionForInterstellar, genreListForInterstellar);
         movies.add(interstellar);
 
@@ -53,7 +53,7 @@ public class Movie implements Comparable<Movie> {
                 "\"The Matrix\" is a groundbreaking sci-fi action film directed by the Wachowskis, following a computer hacker who discovers the shocking truth about reality and joins a rebellion against sentient machines, blending mind-bending visual effects with philosophical themes of identity and control.";
         List<Genre> genreListForMatrix = new ArrayList<>();
         genreListForMatrix.add(new Genre("ACTION"));
-        genreListForMatrix.add(new Genre("SCIENCE FICTION"));
+        genreListForMatrix.add(new Genre("SCIENCE_FICTION"));
         Movie matrix = new Movie("The Matrix", descriptionForMatrix, genreListForMatrix);
         movies.add(matrix);
 
@@ -84,7 +84,7 @@ public class Movie implements Comparable<Movie> {
         String descriptionForAvengers = "\"Avengers\" is a superhero film where members of the titular team unite to save the world from the powerful villain Loki and his alien army.";
         List<Genre> genreListForAvengers = new ArrayList<>();
         genreListForAvengers.add(new Genre("ACTION"));
-        genreListForAvengers.add(new Genre("SCIENCE FICTION"));
+        genreListForAvengers.add(new Genre("SCIENCE_FICTION"));
         Movie avengers = new Movie("Avengers",descriptionForAvengers, genreListForAvengers);
         movies.add(avengers);
 

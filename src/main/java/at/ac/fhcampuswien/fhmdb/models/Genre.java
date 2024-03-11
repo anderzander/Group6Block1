@@ -16,14 +16,34 @@ public class Genre {
 
     public static List<Genre> getAllGenres(){
         List<Genre> listOfAllGenres = new ArrayList<>();
-        String[] allGenres ={"ACTION", "ADVENTURE", "ANIMATION", "BIOGRAPHY","COMEDY",
-                "CRIME", "DRAMA", "DOCUMENTARY", "FAMILY", "FANTASY", "HISTORY", "HORROR",
-                "MUSICAL", "MYSTERY", "ROMANCE", "SCIENCE FICTION", "SPORT", "THRILLER", "WAR",
-                "WESTERN"};
-        for (String genreName : allGenres) {
-            listOfAllGenres.add(new Genre(genreName));
+
+        for (allGenres genreName : Genre.allGenres.values()) {
+            listOfAllGenres.add(new Genre(genreName.name()));
         }
 
         return listOfAllGenres;
+    }
+
+    enum allGenres{
+        ACTION,
+        ADVENTURE,
+        ANIMATION,
+        BIOGRAPHY,
+        COMEDY,
+        CRIME,
+        DRAMA,
+        DOCUMENTARY,
+        FAMILY,
+        FANTASY,
+        HISTORY,
+        HORROR,
+        MUSICAL,
+        MYSTERY,
+        ROMANCE,
+        SCIENCE_FICTION,
+        SPORT,
+        THRILLER,
+        WAR,
+        WESTERN
     }
 }
