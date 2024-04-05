@@ -3,6 +3,8 @@ package at.ac.fhcampuswien.fhmdb;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
@@ -12,6 +14,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
+import javax.net.ssl.HttpsURLConnection;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.*;
 
@@ -36,7 +41,15 @@ public class HomeController implements Initializable {
     public JFXButton resetBtn;
 
 
-    public static final List<Movie> allMovies = Movie.initializeMovies();
+    public static final List<Movie> allMovies;
+
+    static {
+        try {
+            allMovies = MovieAPI.getMoviesFromApi();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     private ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
@@ -44,6 +57,40 @@ public class HomeController implements Initializable {
 
     public ObservableList<Movie> getObservableMovies() {
         return observableMovies;
+    }
+    public static List<Movie> getMoviesFromApi() throws IOException {
+        URL getMoviesURL = new URL("https://prog2.fh-campuswien.ac.at/movies");
+        HttpsURLConnection connection = (HttpsURLConnection) getMoviesURL.openConnection();
+        connection.setRequestMethod("GET");
+
+        int responseCode = connection.getResponseCode();
+        System.out.println("Response CODE: " + responseCode);
+
+        if (responseCode == HttpsURLConnection.HTTP_OK) {
+            StringBuilder stringBuilder = new StringBuilder();
+            Scanner scanner = new Scanner(connection.getInputStream());
+            while (scanner.hasNext()) {
+                stringBuilder.append(scanner.nextLine());
+            }
+
+            Gson gson = new Gson();
+            Type movieListType = new TypeToken<List<Movie>>() {}.getType();
+            return gson.fromJson(stringBuilder.toString(), movieListType);
+        } else {
+            System.out.println("Error in sending a GET request");
+            return null;
+        }
+    }
+
+    public static void printMoviesDetails(List<Movie> movies) {
+        if (movies != null && !movies.isEmpty()) {
+            System.out.println("Details des ersten Films:");
+            for (Movie movie : movies) {
+                System.out.println(movie.toString());
+            }
+        } else {
+            System.out.println("Keine Filme gefunden.");
+        }
     }
 
     @Override
@@ -82,9 +129,9 @@ public class HomeController implements Initializable {
             movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
         });
 
-        searchBtn.setOnAction(sortEvent -> {
-            filterObservableMovies(searchField.getText(), (String) genreComboBox.getValue());
-        });
+//        searchBtn.setOnAction(sortEvent -> {
+//            filterObservableMovies(searchField.getText(), (String) genreComboBox.getValue());
+//        });
 
     }
 
@@ -104,7 +151,7 @@ public class HomeController implements Initializable {
             }
         }
     }
-
+/*
     public void filterObservableMovies(String searchField, String genreComboBox) {
 
 
@@ -124,7 +171,9 @@ public class HomeController implements Initializable {
         observableMovies = finishedFilteredList;
 
     }
+    */
 
+ /*
     public List<Movie> listFilteredByGenres(List<Movie> MovieListToFilter, String genreComboBox){
 
         if (genreComboBox == null){
@@ -132,6 +181,7 @@ public class HomeController implements Initializable {
         }
 
         Set<Movie> filteredMovieSetByGenre = new HashSet<>();
+
 
         for (Movie movie : MovieListToFilter) {
             for (Genre genre : movie.getGenres()) {
@@ -142,8 +192,9 @@ public class HomeController implements Initializable {
         }
 
         return new ArrayList<>(filteredMovieSetByGenre);
-    }
+    }*/
 
+    /*
     public List<Movie> listFilteredBySearchField(List<Movie> movieList, String searchField){
 
         Set<Movie> filteredMovieSetBySearchField = new HashSet<>();
@@ -157,7 +208,7 @@ public class HomeController implements Initializable {
 
         return new ArrayList<>(filteredMovieSetBySearchField);
     }
-
+*/
 
 }
 

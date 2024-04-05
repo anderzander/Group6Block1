@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
+import static at.ac.fhcampuswien.fhmdb.MovieAPI.getMoviesFromApi;
+import static at.ac.fhcampuswien.fhmdb.MovieAPI.printMoviesDetails;
+
 public class FhmdbApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
@@ -19,7 +22,8 @@ public class FhmdbApplication extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
-        launch();
+    public static void main(String[] args) throws IOException {
+        printMoviesDetails(getMoviesFromApi());
+       // launch();
     }
 }
