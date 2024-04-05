@@ -3,8 +3,6 @@ package at.ac.fhcampuswien.fhmdb;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
@@ -14,9 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.*;
 
@@ -34,6 +30,10 @@ public class HomeController implements Initializable {
 
     @FXML
     public JFXComboBox genreComboBox;
+    @FXML
+    public JFXComboBox releaseYearComboBox;
+    @FXML
+    public JFXComboBox ratingComboBox;
 
     @FXML
     public JFXButton sortBtn;
@@ -50,6 +50,8 @@ public class HomeController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
+
 
 
     private ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
@@ -72,6 +74,8 @@ public class HomeController implements Initializable {
         for (Genre genre : getAllGenres()) {
             genreComboBox.getItems().add(genre.getGenreAsString());
         }
+        ratingComboBox.setPromptText("Filter by Rating");
+        releaseYearComboBox.setPromptText("Filter by Release Year");
 
         // TODO add event handlers to buttons and call the regarding methods
         // either set event handlers in the fxml file (onAction) or add them here
