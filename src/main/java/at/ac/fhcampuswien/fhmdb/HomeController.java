@@ -58,40 +58,6 @@ public class HomeController implements Initializable {
     public ObservableList<Movie> getObservableMovies() {
         return observableMovies;
     }
-    public static List<Movie> getMoviesFromApi() throws IOException {
-        URL getMoviesURL = new URL("https://prog2.fh-campuswien.ac.at/movies");
-        HttpsURLConnection connection = (HttpsURLConnection) getMoviesURL.openConnection();
-        connection.setRequestMethod("GET");
-
-        int responseCode = connection.getResponseCode();
-        System.out.println("Response CODE: " + responseCode);
-
-        if (responseCode == HttpsURLConnection.HTTP_OK) {
-            StringBuilder stringBuilder = new StringBuilder();
-            Scanner scanner = new Scanner(connection.getInputStream());
-            while (scanner.hasNext()) {
-                stringBuilder.append(scanner.nextLine());
-            }
-
-            Gson gson = new Gson();
-            Type movieListType = new TypeToken<List<Movie>>() {}.getType();
-            return gson.fromJson(stringBuilder.toString(), movieListType);
-        } else {
-            System.out.println("Error in sending a GET request");
-            return null;
-        }
-    }
-
-    public static void printMoviesDetails(List<Movie> movies) {
-        if (movies != null && !movies.isEmpty()) {
-            System.out.println("Details des ersten Films:");
-            for (Movie movie : movies) {
-                System.out.println(movie.toString());
-            }
-        } else {
-            System.out.println("Keine Filme gefunden.");
-        }
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -129,9 +95,9 @@ public class HomeController implements Initializable {
             movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
         });
 
-//        searchBtn.setOnAction(sortEvent -> {
-//            filterObservableMovies(searchField.getText(), (String) genreComboBox.getValue());
-//        });
+        searchBtn.setOnAction(sortEvent -> {
+            filterObservableMovies(searchField.getText(), (String) genreComboBox.getValue());
+        });
 
     }
 
@@ -151,7 +117,7 @@ public class HomeController implements Initializable {
             }
         }
     }
-/*
+
     public void filterObservableMovies(String searchField, String genreComboBox) {
 
 
@@ -171,9 +137,9 @@ public class HomeController implements Initializable {
         observableMovies = finishedFilteredList;
 
     }
-    */
 
- /*
+
+
     public List<Movie> listFilteredByGenres(List<Movie> MovieListToFilter, String genreComboBox){
 
         if (genreComboBox == null){
@@ -192,9 +158,9 @@ public class HomeController implements Initializable {
         }
 
         return new ArrayList<>(filteredMovieSetByGenre);
-    }*/
+    }
 
-    /*
+
     public List<Movie> listFilteredBySearchField(List<Movie> movieList, String searchField){
 
         Set<Movie> filteredMovieSetBySearchField = new HashSet<>();
@@ -208,7 +174,7 @@ public class HomeController implements Initializable {
 
         return new ArrayList<>(filteredMovieSetBySearchField);
     }
-*/
+
 
 }
 

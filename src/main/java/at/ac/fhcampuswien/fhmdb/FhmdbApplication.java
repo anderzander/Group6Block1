@@ -23,7 +23,7 @@ public class FhmdbApplication extends Application {
     }
 
     public static void main(String[] args) throws IOException {
-        printMoviesDetails(getMoviesFromApi());
-       // launch();
+        //printMoviesDetails(getMoviesFromApi());
+        launch();
     }
 }
