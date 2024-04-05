@@ -68,6 +68,13 @@ public class Movie implements Comparable<Movie> {
         this.title = title;
     }
 
+    public List<Genre> getGenres() {
+        List<Genre> output = new ArrayList<>();
+        for (String string : genres) {
+            output.add(new Genre(string));
+        }
+        return output;
+    }
     public void setGenres(List<String> genres) {
         this.genres = genres;
     }
@@ -135,13 +142,7 @@ public class Movie implements Comparable<Movie> {
     public void setRating(double rating) {
         this.rating = rating;
     }
-    public List<Genre> getGenres() {
-        List<Genre> output = new ArrayList<>();
-        for (String string : genres) {
-            output.add(new Genre(string));
-        }
-        return output;
-    }
+
 /*
 
     public String getTitle() {
@@ -235,5 +236,14 @@ public String toString() {
     public int compareTo(Movie other) {
         int compareInt = this.title.compareTo(other.title);
         return Integer.compare(compareInt, 0);
+    }
+    public String genreListToString() {
+        StringJoiner joiner = new StringJoiner(", ");
+
+        for (String genre : this.genres) {
+            joiner.add(genre);
+        }
+
+        return joiner.toString();
     }
 }
