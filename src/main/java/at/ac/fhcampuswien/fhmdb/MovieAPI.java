@@ -25,6 +25,7 @@ public class MovieAPI {
             while (scanner.hasNext()) {
                 stringBuilder.append(scanner.nextLine());
             }
+            System.out.println(stringBuilder);  // String of everything we get from the API
 
             Gson gson = new Gson();
             Type movieListType = new TypeToken<List<Movie>>() {}.getType();

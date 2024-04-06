@@ -23,6 +23,7 @@ public class FhmdbApplication extends Application {
     }
 
     public static void main(String[] args) throws IOException {
+        //System.out.println(HomeController.getMostPopularActor(HomeController.allMovies));
         //printMoviesDetails(getMoviesFromApi());
         launch();
     }
