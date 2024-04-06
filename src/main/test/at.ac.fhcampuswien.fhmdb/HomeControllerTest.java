@@ -248,4 +248,39 @@ class HomeControllerTest {
         //expected
         assertEquals(expected, actual);
     }
+    @Test
+    void stream_filter_longest_title_given_number_length(){
+        //given
+        List<String> listA = new ArrayList<>();
+        listA.add("actor1");
+        listA.add("actor2");
+        listA.add("actorLongest");
+        List<String> listB = new ArrayList<>();
+        listB.add("Actor1");
+        List<String> listC = new ArrayList<>();
+        listC.add("actor3");
+        listC.add("actorLongest");
+        listC.add("actor2");
+        List<String> listD = new ArrayList<>();
+        listD.add("actor2");
+        listD.add("actor1");
+
+        Movie a = new Movie("", "", new ArrayList<>(), 0, "", "", 0, new ArrayList<>(), new ArrayList<>(), listA, 0.0);
+        Movie b = new Movie("", "", new ArrayList<>(), 0, "", "", 0, new ArrayList<>(), new ArrayList<>(), listB, 0.0);
+        Movie c = new Movie("", "", new ArrayList<>(), 0, "", "", 0, new ArrayList<>(), new ArrayList<>(), listC, 0.0);
+        Movie d = new Movie("", "", new ArrayList<>(), 0, "", "", 0, new ArrayList<>(), new ArrayList<>(), listD, 0.0);
+
+        List<Movie> sampleMovies = new ArrayList<>();
+        sampleMovies.add(a);
+        sampleMovies.add(b);
+        sampleMovies.add(c);
+        sampleMovies.add(d);
+        //when
+        int actual = HomeController.getNumberLongestTitle;
+        int expected = 12;
+
+        //then
+        assertEquals(actual,expected);
+
+    }
 }

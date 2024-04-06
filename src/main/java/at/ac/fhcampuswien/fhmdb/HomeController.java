@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import static at.ac.fhcampuswien.fhmdb.models.Genre.getAllGenres;
 
 public class HomeController implements Initializable {
+
     @FXML
     public JFXButton searchBtn;
 
@@ -192,7 +193,6 @@ public class HomeController implements Initializable {
                 // Den Schauspieler mit den meisten Filmen als String zurückgeben
         return mostPopularActor.map(Map.Entry::getKey).orElse("");
     }
-
 
 }
 
