@@ -38,19 +38,19 @@ public class Movie implements Comparable<Movie> {
         this.genres = genres;
     }
 
-//   public Movie(String id, String title, List<String> genres, int releaseYear, String description, String imgUrl, int lengthInMinutes, List<String> directors, List<String> writers, List<String> mainCast, double rating) {
-//       this.id = id;
-//       this.title = title;
-//       this.genres = genres;
-//       this.releaseYear = releaseYear;
-//       this.description = description;
-//       this.imgUrl = imgUrl;
-//       this.lengthInMinutes = lengthInMinutes;
-//       this.directors = directors;
-//       this.writers = writers;
-//       this.mainCast = mainCast;
-//       this.rating = rating;
-//   }
+   public Movie(String id, String title, List<String> genres, int releaseYear, String description, String imgUrl, int lengthInMinutes, List<String> directors, List<String> writers, List<String> mainCast, double rating) {
+       this.id = id;
+       this.title = title;
+       this.genres = genres;
+       this.releaseYear = releaseYear;
+       this.description = description;
+       this.imgUrl = imgUrl;
+       this.lengthInMinutes = lengthInMinutes;
+       this.directors = directors;
+       this.writers = writers;
+       this.mainCast = mainCast;
+       this.rating = rating;
+   }
 
     public String getId() {
         return id;

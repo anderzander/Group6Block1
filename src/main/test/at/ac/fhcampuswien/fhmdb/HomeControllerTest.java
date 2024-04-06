@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HomeControllerTest {
     @Test
-    void filter_movies_by_search_field_depending_on_titel(){
+    void filter_movies_by_search_field_depending_on_titel() {
         //given
         HomeController homeController = new HomeController();
 
@@ -186,7 +186,7 @@ class HomeControllerTest {
 
 
     @Test
-    void filter_movies_by_search_field_depending_on_description(){
+    void filter_movies_by_search_field_depending_on_description() {
         //given
         HomeController homeController = new HomeController();
 
@@ -214,5 +214,38 @@ class HomeControllerTest {
         assertEquals(3, actual.size());
     }
 
+    @Test
+    void stream_filter_most_popular_actor() {
+        //given
+        List<String> mainCastListA = new ArrayList<>();
+        mainCastListA.add("Actor1");
+        mainCastListA.add("Actor2");
+        mainCastListA.add("Actor3");
+        List<String> mainCastListB = new ArrayList<>();
+        mainCastListB.add("Actor1");
+        mainCastListB.add("Actor2");
+        List<String> mainCastListC = new ArrayList<>();
+        mainCastListC.add("Actor1");
+        mainCastListB.add("Actor2");
+        List<String> mainCastListD = new ArrayList<>();
+        mainCastListD.add("Actor1");
 
+        Movie a = new Movie("", "", new ArrayList<>(), 0, "", "", 0, new ArrayList<>(), new ArrayList<>(), mainCastListA, 0.0);
+        Movie b = new Movie("", "", new ArrayList<>(), 0, "", "", 0, new ArrayList<>(), new ArrayList<>(), mainCastListB, 0.0);
+        Movie c = new Movie("", "", new ArrayList<>(), 0, "", "", 0, new ArrayList<>(), new ArrayList<>(), mainCastListC, 0.0);
+        Movie d = new Movie("", "", new ArrayList<>(), 0, "", "", 0, new ArrayList<>(), new ArrayList<>(), mainCastListD, 0.0);
+
+        List<Movie> sampleMovies = new ArrayList<>();
+        sampleMovies.add(a);
+        sampleMovies.add(b);
+        sampleMovies.add(c);
+        sampleMovies.add(d);
+
+        //when
+        String actual = HomeController.getMostPopularActor(sampleMovies);
+        String expected = "Actor1";
+
+        //expected
+        assertEquals(expected, actual);
+    }
 }

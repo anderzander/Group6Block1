@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -15,6 +16,7 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class HomeController implements Initializable {
@@ -177,6 +179,19 @@ public class HomeController implements Initializable {
         }
 
         return new ArrayList<>(filteredMovieSetBySearchField);
+    }
+
+    public static String getMostPopularActor(List<Movie> movieList){
+        Map<String, Long> actorCount = movieList.stream()
+                .flatMap(movie -> movie.getMainCast().stream())
+                .collect(Collectors.groupingBy(actor -> actor, Collectors.counting()));
+
+        // Schauspieler sortieren nach Anzahl der Filme
+        Optional<Map.Entry<String, Long>> mostPopularActor = actorCount.entrySet().stream()
+                .max(Comparator.comparing(Map.Entry::getValue));
+
+                // Den Schauspieler mit den meisten Filmen als String zurückgeben
+        return mostPopularActor.map(Map.Entry::getKey).orElse("");
     }
 
 

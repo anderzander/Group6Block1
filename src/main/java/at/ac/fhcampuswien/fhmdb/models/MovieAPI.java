@@ -1,4 +1,4 @@
-package at.ac.fhcampuswien.fhmdb;
+package at.ac.fhcampuswien.fhmdb.models;
 
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.google.gson.Gson;
@@ -26,6 +26,7 @@ public class MovieAPI {
             while (scanner.hasNext()) {
                 stringBuilder.append(scanner.nextLine());
             }
+            System.out.println(stringBuilder);  // String of everything we get from the API
 
             Gson gson = new Gson();;
             return Arrays.asList(gson.fromJson(stringBuilder.toString(), Movie[].class));
