@@ -110,19 +110,19 @@ class HomeControllerTest {
         //given
         HomeController homeController = new HomeController();
 
-        List<String> genreListForMovieA = new ArrayList<>();
-        genreListForMovieA.add("ACTION");
-        genreListForMovieA.add("COMEDY");
+        List<Genre> genreListForMovieA = new ArrayList<>();
+        genreListForMovieA.add(Genre.ACTION);
+        genreListForMovieA.add(Genre.COMEDY);
         Movie movieA = new Movie("A", null, genreListForMovieA);
 
-        List<String> genreListForMovieB = new ArrayList<>();
-        genreListForMovieB.add("THRILLER");
-        genreListForMovieB.add("ACTION");
+        List<Genre> genreListForMovieB = new ArrayList<>();
+        genreListForMovieB.add(Genre.THRILLER);
+        genreListForMovieB.add(Genre.ACTION);
         Movie movieB = new Movie("B", null, genreListForMovieB);
 
-        List<String> genreListForMovieC = new ArrayList<>();
-        genreListForMovieC.add("THRILLER");
-        genreListForMovieC.add("COMEDY");
+        List<Genre> genreListForMovieC = new ArrayList<>();
+        genreListForMovieC.add(Genre.THRILLER);
+        genreListForMovieC.add(Genre.COMEDY);
         Movie movieC = new Movie("C", null, genreListForMovieC);
 
         List<Movie> sampleMovies = new ArrayList<>();
@@ -149,19 +149,19 @@ class HomeControllerTest {
         //given
         HomeController homeController = new HomeController();
 
-        List<String> genreListForMovieA = new ArrayList<>();
-        genreListForMovieA.add("COMEDY");
+        List<Genre> genreListForMovieA = new ArrayList<>();
+        genreListForMovieA.add(Genre.COMEDY);
         Movie movieA = new Movie("A", null, genreListForMovieA);
 
-        List<String> genreListForMovieB = new ArrayList<>();
-        genreListForMovieB.add("THRILLER");
-        genreListForMovieB.add("DRAMA");
+        List<Genre> genreListForMovieB = new ArrayList<>();
+        genreListForMovieB.add(Genre.THRILLER);
+        genreListForMovieB.add(Genre.DRAMA);
         Movie movieB = new Movie("B", null, genreListForMovieB);
 
-        List<String> genreListForMovieC = new ArrayList<>();
-        genreListForMovieC.add("THRILLER");
-        genreListForMovieC.add("COMEDY");
-        genreListForMovieC.add("DRAMA");
+        List<Genre> genreListForMovieC = new ArrayList<>();
+        genreListForMovieC.add(Genre.THRILLER);
+        genreListForMovieC.add(Genre.COMEDY);
+        genreListForMovieC.add(Genre.DRAMA);
         Movie movieC = new Movie("C", null, genreListForMovieC);
 
         List<Movie> sampleMovies = new ArrayList<>();

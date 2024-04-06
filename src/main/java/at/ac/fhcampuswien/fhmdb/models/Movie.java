@@ -12,7 +12,7 @@ public class Movie implements Comparable<Movie> {
     @SerializedName("title")
     public String title;
     @SerializedName("genres")
-    public List<String> genres;
+    public List<Genre> genres;
     @SerializedName("releaseYear")
     public int releaseYear;
     @SerializedName("description")
@@ -32,7 +32,7 @@ public class Movie implements Comparable<Movie> {
 
 
 
-    public Movie(String title, String description, List<String> genres) {
+    public Movie(String title, String description, List<Genre> genres) {
         this.title = title;
         this.description = description;
         this.genres = genres;
@@ -69,13 +69,9 @@ public class Movie implements Comparable<Movie> {
     }
 
     public List<Genre> getGenres() {
-        List<Genre> output = new ArrayList<>();
-        for (String string : genres) {
-            output.add(new Genre(string));
-        }
-        return output;
+        return this.genres;
     }
-    public void setGenres(List<String> genres) {
+    public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
 
@@ -240,8 +236,8 @@ public String toString() {
     public String genreListToString() {
         StringJoiner joiner = new StringJoiner(", ");
 
-        for (String genre : this.genres) {
-            joiner.add(genre);
+        for (Genre genre : this.genres) {
+            joiner.add(genre.toString());
         }
 
         return joiner.toString();
