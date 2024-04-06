@@ -215,6 +215,13 @@ public class HomeController implements Initializable {
                 .filter(movie -> movie.getDirectors().contains(director))
                 .count();
     }
+    public static List<Movie> getMoviesBetweenYears(List<Movie> movieList,int startYear, int endYear) {
+        return movieList.stream()
+                .filter(movie -> movie.releaseYear >= startYear && movie.releaseYear<= endYear)
+                .collect(Collectors.toList());
+
+
+    }
 
 }
 
