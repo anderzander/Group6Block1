@@ -264,11 +264,45 @@ class HomeControllerTest {
         sampleMovies.add(c);
         sampleMovies.add(d);
         //when
-        int actual = HomeController.getNumberLongestTitle(sampleMovies);
+        int actual = HomeController.getLongestMovieTitle(sampleMovies);
         int expected = 12;
 
         //then
         assertEquals(actual,expected);
+    }
+    @Test
+    void given_numbers_of_Regisseurs() {
+        //given
+        List<String> directorList1 = new ArrayList<>();
+        directorList1.add("director1");
+        directorList1.add("director2");
+        directorList1.add("director3");
+        List<String> directorList2 = new ArrayList<>();
+        directorList2.add("director2");
+        List<String> directorList3 = new ArrayList<>();
+        directorList3.add("director2");
+        directorList3.add("director4");
+        List<String> directorList4 = new ArrayList<>();
+        directorList4.add("director1");
+        directorList4.add("director4");
 
+
+        Movie a = new Movie("", "", new ArrayList<>(), 0, "", "", 0, directorList1, new ArrayList<>(), new ArrayList<>(), 0.0);
+        Movie b = new Movie("", "", new ArrayList<>(), 0, "", "", 0, directorList2, new ArrayList<>(), new ArrayList<>(), 0.0);
+        Movie c = new Movie("", "", new ArrayList<>(), 0, "", "", 0, directorList3, new ArrayList<>(), new ArrayList<>(), 0.0);
+        Movie d = new Movie("", "", new ArrayList<>(), 0, "", "", 0, directorList4, new ArrayList<>(), new ArrayList<>(), 0.0);
+
+        List<Movie> sampleMovies = new ArrayList<>();
+        sampleMovies.add(a);
+        sampleMovies.add(b);
+        sampleMovies.add(c);
+        sampleMovies.add(d);
+
+        //when
+        long actual = HomeController.countMoviesFrom(sampleMovies,"director4");
+        long expected = 2;
+
+        //then
+        assertEquals(expected,actual);
     }
 }
