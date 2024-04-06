@@ -7,6 +7,7 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,9 +28,8 @@ public class MovieAPI {
             }
             System.out.println(stringBuilder);  // String of everything we get from the API
 
-            Gson gson = new Gson();
-            Type movieListType = new TypeToken<List<Movie>>() {}.getType();
-            return gson.fromJson(stringBuilder.toString(), movieListType);
+            Gson gson = new Gson();;
+            return Arrays.asList(gson.fromJson(stringBuilder.toString(), Movie[].class));
         } else {
             System.out.println("Error in sending a GET request");
             return null;

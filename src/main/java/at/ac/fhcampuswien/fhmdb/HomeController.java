@@ -18,7 +18,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static at.ac.fhcampuswien.fhmdb.models.Genre.getAllGenres;
 
 public class HomeController implements Initializable {
 
@@ -44,15 +43,7 @@ public class HomeController implements Initializable {
     public JFXButton resetBtn;
 
 
-    public static final List<Movie> allMovies;
-
-    static {
-        try {
-            allMovies = MovieAPI.getMoviesFromApi();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public static List<Movie> allMovies = new ArrayList<>();
 
 
 
@@ -66,6 +57,11 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            allMovies = MovieAPI.getMoviesFromApi();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         observableMovies.addAll(allMovies);         // add dummy data to observable list
 
         // initialize UI stuff
@@ -74,9 +70,8 @@ public class HomeController implements Initializable {
 
         // TODO add genre filter items with genreComboBox.getItems().addAll(...)
         genreComboBox.setPromptText("Filter by Genre");
-        for (Genre genre : getAllGenres()) {
-            genreComboBox.getItems().add(genre.getGenreAsString());
-        }
+            genreComboBox.getItems().addAll(Genre.values());
+
         ratingComboBox.setPromptText("Filter by Rating");
         releaseYearComboBox.setPromptText("Filter by Release Year");
 
@@ -103,7 +98,12 @@ public class HomeController implements Initializable {
         });
 
         searchBtn.setOnAction(sortEvent -> {
-            filterObservableMovies(searchField.getText(), (String) genreComboBox.getValue());
+            if (genreComboBox.getValue() != null){
+                filterObservableMovies(searchField.getText(), genreComboBox.getValue().toString());
+            } else {
+                filterObservableMovies(searchField.getText(),null);
+            }
+
         });
 
     }
@@ -158,7 +158,7 @@ public class HomeController implements Initializable {
 
         for (Movie movie : MovieListToFilter) {
             for (Genre genre : movie.getGenres()) {
-                if (genre.getGenreAsString().equals(genreComboBox) && !filteredMovieSetByGenre.contains(movie)){
+                if (genre.toString().equalsIgnoreCase(genreComboBox)){
                     filteredMovieSetByGenre.add(movie);
                 }
             }
