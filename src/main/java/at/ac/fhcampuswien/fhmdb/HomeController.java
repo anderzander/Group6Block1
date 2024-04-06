@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 
 
 public class HomeController implements Initializable {
+
+
     @FXML
     public JFXButton searchBtn;
 
@@ -198,7 +200,15 @@ public class HomeController implements Initializable {
         // Den Schauspieler mit den meisten Filmen als String zurückgeben
         return mostPopularActor.map(Map.Entry::getKey).orElse("");
     }
+    public static int getNumberLongestTitle(List<Movie> movieList){
+        return movieList.stream()
+                .map(Movie::getTitle)   //Umwandlung String Movie zu Stream Movie
+                .max(Comparator.comparingInt(String::length))   // mit Compare den längsten Film finden
+                .map(String::length)           // String länge wird in int umgewandelt
+                .orElse(0);              // es wird 0 zurück gegebn, wenn kein Title in der Liste ist
 
+
+    }
 
 }
 
