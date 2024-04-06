@@ -19,6 +19,14 @@
     -fx-text-fill: #ffffff;
 }
 
+.text-year {
+    -fx-text-fill: #5e8aff;
+}
+
+.text-rating {
+    -fx-text-fill: #d0ff00;
+}
+
 .list-view .list-cell:even {
     -fx-background-color: black;
     -fx-text-fill: white;
