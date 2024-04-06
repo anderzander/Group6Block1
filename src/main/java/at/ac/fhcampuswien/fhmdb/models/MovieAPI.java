@@ -10,10 +10,9 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-
 public class MovieAPI {
-    public static List<Movie> getMoviesFromApi() throws IOException {
-        URL getMoviesURL = new URL("https://prog2.fh-campuswien.ac.at/movies");
+    public static List<Movie> getMoviesFromApi(String url) throws IOException {
+        URL getMoviesURL = new URL(url);
         HttpsURLConnection connection = (HttpsURLConnection) getMoviesURL.openConnection();
         connection.setRequestMethod("GET");
 

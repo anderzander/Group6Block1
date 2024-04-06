@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.fhmdb;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
+import at.ac.fhcampuswien.fhmdb.models.Rating;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -45,8 +46,6 @@ public class HomeController implements Initializable {
     public static List<Movie> allMovies = new ArrayList<>();
 
 
-
-
     private ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
 
@@ -57,7 +56,7 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            allMovies = MovieAPI.getMoviesFromApi();
+            allMovies = MovieAPI.getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -69,9 +68,10 @@ public class HomeController implements Initializable {
 
         // TODO add genre filter items with genreComboBox.getItems().addAll(...)
         genreComboBox.setPromptText("Filter by Genre");
-            genreComboBox.getItems().addAll(Genre.values());
+        genreComboBox.getItems().addAll(Genre.values());
 
         ratingComboBox.setPromptText("Filter by Rating");
+        ratingComboBox.getItems().addAll(Rating.getAllValues());
         releaseYearComboBox.setPromptText("Filter by Release Year");
 
         // TODO add event handlers to buttons and call the regarding methods
@@ -87,38 +87,44 @@ public class HomeController implements Initializable {
             //TODO Text isn't grey!!
             searchField.clear();
             genreComboBox.setValue(null);
+            ratingComboBox.setValue(null);
+            releaseYearComboBox.setValue(null);
 
             observableMovies.clear();
 
-            observableMovies.addAll(allMovies);
+            try {
+                observableMovies.addAll(Objects.requireNonNull(MovieAPI.getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies")));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             movieListView.setItems(observableMovies);// set data of observable list to list view
 
             movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
         });
 
         searchBtn.setOnAction(sortEvent -> {
-            if (genreComboBox.getValue() != null){
+            if (genreComboBox.getValue() != null) {
                 filterObservableMovies(searchField.getText(), genreComboBox.getValue().toString());
             } else {
-                filterObservableMovies(searchField.getText(),null);
+                filterObservableMovies(searchField.getText(), null);
             }
 
         });
 
     }
 
-    public void sortObservableMovies(String textFromSortBtn){
-        if(textFromSortBtn.equals("Sort (asc)")) {
+    public void sortObservableMovies(String textFromSortBtn) {
+        if (textFromSortBtn.equals("Sort (asc)")) {
             // TODO sort observableMovies ascending
             Collections.sort(observableMovies);
-            if (sortBtn != null){
+            if (sortBtn != null) {
                 sortBtn.setText("Sort (desc)");
             }
 
         } else {
             // TODO sort observableMovies descending
             observableMovies.sort(Collections.reverseOrder());
-            if (sortBtn != null){
+            if (sortBtn != null) {
                 sortBtn.setText("Sort (asc)");
             }
         }
@@ -145,10 +151,9 @@ public class HomeController implements Initializable {
     }
 
 
+    public List<Movie> listFilteredByGenres(List<Movie> MovieListToFilter, String genreComboBox) {
 
-    public List<Movie> listFilteredByGenres(List<Movie> MovieListToFilter, String genreComboBox){
-
-        if (genreComboBox == null){
+        if (genreComboBox == null) {
             return new ArrayList<>(allMovies);
         }
 
@@ -157,7 +162,7 @@ public class HomeController implements Initializable {
 
         for (Movie movie : MovieListToFilter) {
             for (Genre genre : movie.getGenres()) {
-                if (genre.toString().equalsIgnoreCase(genreComboBox)){
+                if (genre.toString().equalsIgnoreCase(genreComboBox)) {
                     filteredMovieSetByGenre.add(movie);
                 }
             }
@@ -167,13 +172,13 @@ public class HomeController implements Initializable {
     }
 
 
-    public List<Movie> listFilteredBySearchField(List<Movie> movieList, String searchField){
+    public List<Movie> listFilteredBySearchField(List<Movie> movieList, String searchField) {
 
         Set<Movie> filteredMovieSetBySearchField = new HashSet<>();
         String toSearch = searchField.toLowerCase();
 
         for (Movie movie : movieList) {
-            if (movie.getTitle().toLowerCase().contains(toSearch) || movie.getDescription().toLowerCase().contains(toSearch)){
+            if (movie.getTitle().toLowerCase().contains(toSearch) || movie.getDescription().toLowerCase().contains(toSearch)) {
                 filteredMovieSetBySearchField.add(movie);
             }
         }
@@ -181,7 +186,7 @@ public class HomeController implements Initializable {
         return new ArrayList<>(filteredMovieSetBySearchField);
     }
 
-    public static String getMostPopularActor(List<Movie> movieList){
+    public static String getMostPopularActor(List<Movie> movieList) {
         Map<String, Long> actorCount = movieList.stream()
                 .flatMap(movie -> movie.getMainCast().stream())
                 .collect(Collectors.groupingBy(actor -> actor, Collectors.counting()));
@@ -190,7 +195,7 @@ public class HomeController implements Initializable {
         Optional<Map.Entry<String, Long>> mostPopularActor = actorCount.entrySet().stream()
                 .max(Comparator.comparing(Map.Entry::getValue));
 
-                // Den Schauspieler mit den meisten Filmen als String zurückgeben
+        // Den Schauspieler mit den meisten Filmen als String zurückgeben
         return mostPopularActor.map(Map.Entry::getKey).orElse("");
     }
 

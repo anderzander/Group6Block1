@@ -14,7 +14,9 @@ public class MovieCell extends ListCell<Movie> {
     private final Label title = new Label();
     private final Label detail = new Label();
     private final Label genres = new Label();
-    private final VBox layout = new VBox(title, detail, genres);
+    private final Label releaseYear = new Label();
+    private final Label rating = new Label();
+    private final VBox layout = new VBox(title, detail, genres, releaseYear, rating);
     private double sceneWith;
 
     @Override
@@ -32,13 +34,17 @@ public class MovieCell extends ListCell<Movie> {
                             ? movie.getDescription()
                             : "No description available"
             );
-            genres.setText(movie.genreListToString());
+            genres.setText("GENRE: " + movie.genreListToString());
+            releaseYear.setText("RELEASE YEAR: " + movie.getReleaseYear());
+            rating.setText("RATING: " + movie.getRating());
 
 
             // color scheme
             title.getStyleClass().add("text-yellow");
             detail.getStyleClass().add("text-white");
             genres.getStyleClass().add("text-white");
+            releaseYear.getStyleClass().add("text-year");
+            rating.getStyleClass().add("text-rating");
             layout.setBackground(new Background(new BackgroundFill(Color.web("#454545"), null, null)));
 
             // layout
