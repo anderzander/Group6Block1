@@ -4,29 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Rating {
-    ZERO("from 0"),
-    ONE("from 1"),
-    TWO("from 2"),
-    THREE("from 3"),
-    FOUR("from 4"),
-    FIVE("from 5"),
-    SIX("from 6"),
-    SEVEN("from 7"),
-    EIGHT("from 8"),
-    NINE("from 9");
+    ZERO(0),
+    ONE(1),
+    TWO(2),
+    THREE(3),
+    FOUR(4),
+    FIVE(5),
+    SIX(6),
+    SEVEN(7),
+    EIGHT(8),
+    NINE(9);
 
-    private final String value;
+    private final double value;
 
-    Rating(String value) {
+    Rating(double value) {
         this.value = value;
     }
 
-    public String getValue() {
+    public double getValue() {
         return value;
     }
 
-    public static List<String> getAllValues() {
-        List<String> output = new ArrayList<>();
+    public static List<Double> getAllValues() {
+        List<Double> output = new ArrayList<>();
         for (Rating rating : Rating.values()) {
             output.add(rating.getValue());
         }
