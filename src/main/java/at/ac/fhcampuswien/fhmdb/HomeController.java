@@ -13,6 +13,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,6 +48,7 @@ public class HomeController implements Initializable {
 
 
     public static List<Movie> allMovies = new ArrayList<>();
+    public static List<Integer> releaseYearList = new ArrayList<>();
 
 
     private ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
@@ -77,6 +80,13 @@ public class HomeController implements Initializable {
         ratingComboBox.setPromptText("Filter by Rating");
         ratingComboBox.getItems().addAll(Rating.getAllValues());
         releaseYearComboBox.setPromptText("Filter by Release Year");
+        for (Movie movie : allMovies) {
+            if (!releaseYearList.contains(movie.getReleaseYear())){
+                releaseYearList.add(movie.getReleaseYear());
+            }
+        }
+        Collections.sort(releaseYearList);
+        releaseYearComboBox.getItems().addAll(releaseYearList);
 
         // TODO add event handlers to buttons and call the regarding methods
         // either set event handlers in the fxml file (onAction) or add them here
@@ -97,16 +107,28 @@ public class HomeController implements Initializable {
             observableMovies.clear();
 
             try {
-                observableMovies.addAll(Objects.requireNonNull(MovieAPI.getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies")));
+                allMovies = MovieAPI.getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
+            observableMovies.addAll(allMovies);
+
             movieListView.setItems(observableMovies);// set data of observable list to list view
 
             movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
         });
 
         searchBtn.setOnAction(sortEvent -> {
+
+            try {
+                allMovies = MovieAPI.getMoviesFromApi(MovieAPI.urlForFilteredList(releaseYearComboBox.getValue(), ratingComboBox.getValue()));
+                System.out.println(MovieAPI.urlForFilteredList(releaseYearComboBox.getValue(), ratingComboBox.getValue()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+
             if (genreComboBox.getValue() != null) {
                 filterObservableMovies(searchField.getText(), genreComboBox.getValue().toString());
             } else {

@@ -11,6 +11,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 public class MovieAPI {
+
+    static final String startURL = "https://prog2.fh-campuswien.ac.at/movies";
+
+    public static String urlForFilteredList(Object releaseYear, Object rating){
+        StringBuilder outputURL = new StringBuilder();
+        if (releaseYear != null && rating != null){
+            return outputURL.append(startURL + "?releaseYear=").append(releaseYear).append("&ratingFrom=").append(rating).toString();
+        } else if (releaseYear != null){
+            return outputURL.append(startURL + "?releaseYear=").append(releaseYear).toString();
+        } else if (rating != null){
+            return outputURL.append(startURL + "?ratingFrom=").append(rating).toString();
+        }
+
+        return startURL;
+    }
     public static List<Movie> getMoviesFromApi(String url) throws IOException {
         URL getMoviesURL = new URL(url);
         HttpsURLConnection connection = (HttpsURLConnection) getMoviesURL.openConnection();
@@ -37,12 +52,12 @@ public class MovieAPI {
 
     public static void printMoviesDetails(List<Movie> movies) {
         if (movies != null && !movies.isEmpty()) {
-            System.out.println("Details des ersten Films:");
+            System.out.println("Movies from API:");
             for (Movie movie : movies) {
                 System.out.println(movie.toString());
             }
         } else {
-            System.out.println("Keine Filme gefunden.");
+            System.out.println("No movies found.");
         }
     }
 
