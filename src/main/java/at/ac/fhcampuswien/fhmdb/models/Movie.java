@@ -2,13 +2,12 @@ package at.ac.fhcampuswien.fhmdb.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
 public class Movie implements Comparable<Movie> {
     @SerializedName("id")
-    public String id;
+    public String movieID;
     @SerializedName("title")
     public String title;
     @SerializedName("genres")
@@ -39,7 +38,7 @@ public class Movie implements Comparable<Movie> {
     }
 
    public Movie(String id, String title, List<Genre> genres, int releaseYear, String description, String imgUrl, int lengthInMinutes, List<String> directors, List<String> writers, List<String> mainCast, double rating) {
-       this.id = id;
+       this.movieID = id;
        this.title = title;
        this.genres = genres;
        this.releaseYear = releaseYear;
@@ -52,12 +51,12 @@ public class Movie implements Comparable<Movie> {
        this.rating = rating;
    }
 
-    public String getId() {
-        return id;
+    public String getMovieID() {
+        return movieID;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMovieID(String movieID) {
+        this.movieID = movieID;
     }
 
     public String getTitle() {
@@ -215,7 +214,7 @@ public class Movie implements Comparable<Movie> {
 */
 public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("ID: ").append(id).append("\n");
+    sb.append("ID: ").append(movieID).append("\n");
     sb.append("Title: ").append(title).append("\n");
     sb.append("Genres: ").append(genres).append("\n");
     sb.append("Release year: ").append(releaseYear).append("\n");
