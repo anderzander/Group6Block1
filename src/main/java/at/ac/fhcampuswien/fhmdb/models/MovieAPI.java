@@ -52,12 +52,12 @@ public class MovieAPI {
 
     public static void printMoviesDetails(List<Movie> movies) {
         if (movies != null && !movies.isEmpty()) {
-            System.out.println("Movies from API:");
+            System.out.println("Details des ersten Films:");
             for (Movie movie : movies) {
                 System.out.println(movie.toString());
             }
         } else {
-            System.out.println("No movies found.");
+            System.out.println("Keine Filme gefunden.");
         }
     }
 
