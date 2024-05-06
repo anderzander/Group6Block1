@@ -1,8 +1,6 @@
 module at.ac.fhcampuswien.fhmdb {
     requires javafx.controls;
     requires javafx.fxml;
-    requires ormlite.jdbc;
-    requires java.sql;
 
     requires com.jfoenix;
     requires com.google.gson;
