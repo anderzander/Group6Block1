@@ -1,6 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
-import at.ac.fhcampuswien.fhmdb.models.Movie;
+
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -16,11 +16,11 @@ public class Database {
 
     private static ConnectionSource connectionSource;
 
-    Dao<MovieEntity, Long> dao;
+    private Dao<MovieEntity, Long> dao;
 
     private static Database instance;
 
-    private Database(){
+    private  Database(){
         try {
             createConnectionSource();
             dao = DaoManager.createDao(connectionSource, MovieEntity.class);
@@ -31,7 +31,12 @@ public class Database {
 
     }
 
-    public Database getDatabase(){
+    public void testDB() throws SQLException {
+        MovieEntity movie = new MovieEntity("testID", "TestName");
+        dao.create(movie);
+    }
+
+    public static Database getDatabase(){
         if (instance == null){
             instance = new Database();
         }
@@ -39,6 +44,7 @@ public class Database {
     }
 
     private static void createConnectionSource() throws SQLException {
+
         connectionSource = new JdbcConnectionSource(DB_URL, user, password);
     }
 
