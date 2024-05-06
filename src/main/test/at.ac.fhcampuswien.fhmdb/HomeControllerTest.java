@@ -305,4 +305,31 @@ class HomeControllerTest {
         //then
         assertEquals(expected,actual);
     }
+    @Test
+    void given_movie_between_2000_and_2002(){
+        //given
+        Movie a = new Movie("", "", new ArrayList<>(), 2002, "", "", 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0.0);
+        Movie b = new Movie("", "", new ArrayList<>(), 2009, "", "", 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0.0);
+        Movie c = new Movie("", "", new ArrayList<>(), 2000, "", "", 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0.0);
+        Movie d = new Movie("", "", new ArrayList<>(), 2001, "", "", 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0.0);
+
+        List<Movie> sampleMovies = new ArrayList<>();
+        sampleMovies.add(a);
+        sampleMovies.add(b);
+        sampleMovies.add(c);
+        sampleMovies.add(d);
+
+        List<Movie> expectedList = new ArrayList<>();
+        expectedList.add(a);
+        expectedList.add(c);
+        expectedList.add(d);
+
+        //when
+        List<Movie> actual = HomeController.getMoviesBetweenYears(sampleMovies,2000,2002);
+        List<Movie> expected = expectedList ;
+
+        //then
+        assertEquals(actual,expected);
+
+    }
 }
