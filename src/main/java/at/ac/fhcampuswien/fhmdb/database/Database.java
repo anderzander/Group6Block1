@@ -31,6 +31,10 @@ public class Database {
 
     }
 
+    public Dao<MovieEntity, Long> getDao() {
+        return this.dao;
+    }
+
     public void testDB() throws SQLException {
         MovieEntity movie = new MovieEntity("testID", "TestName");
         dao.create(movie);

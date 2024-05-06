@@ -28,10 +28,10 @@ public class FhmdbApplication extends Application {
         //System.out.println(HomeController.getMostPopularActor(HomeController.allMovies));
         //printMoviesDetails(getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies"));
         launch();
-        try {
-            Database.getDatabase().testDB();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            Database.getDatabase().testDB();
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
     }
 }

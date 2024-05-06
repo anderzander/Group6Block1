@@ -1,8 +1,11 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
+import at.ac.fhcampuswien.fhmdb.database.Database;
+import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.Background;
@@ -10,14 +13,18 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.sql.SQLException;
+
 public class MovieCell extends ListCell<Movie> {
     private final Label title = new Label();
     private final Label detail = new Label();
     private final Label genres = new Label();
     private final Label releaseYear = new Label();
     private final Label rating = new Label();
-    private final VBox layout = new VBox(title, detail, genres, releaseYear, rating);
+    private final Button addToMovieDbButton = new Button("Add to watchlist");
+    private final VBox layout = new VBox(title, detail, genres, releaseYear, rating, addToMovieDbButton);
     private double sceneWith;
+    MovieRepository repository = new MovieRepository();
 
     @Override
     protected void updateItem(Movie movie, boolean empty) {
@@ -60,6 +67,14 @@ public class MovieCell extends ListCell<Movie> {
             layout.spacingProperty().set(10);
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
             setGraphic(layout);
+
+            addToMovieDbButton.setOnMouseClicked(mouseEvent ->{
+                try {
+                    repository.addToWatchlist(movie);
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            });
         }
     }
 
@@ -71,6 +86,8 @@ public class MovieCell extends ListCell<Movie> {
             return this.getScene().getWidth();
         }
     }
+
+
 
 }
 
