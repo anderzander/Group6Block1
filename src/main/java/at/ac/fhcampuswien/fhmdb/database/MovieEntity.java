@@ -79,7 +79,7 @@ public class MovieEntity {
         return rating;
     }
 
-    List<MovieEntity> fromMovies(List<Movie> movies){
+    public static List<MovieEntity> fromMovies(List<Movie> movies){
         List<MovieEntity> output = new ArrayList<>();
         for (Movie movie: movies) {
             output.add(new MovieEntity(movie));
@@ -87,7 +87,7 @@ public class MovieEntity {
         return output;
     }
 
-    List<Movie> toMovies(List<MovieEntity> movieEntities){
+    public static List<Movie> toMovies(List<MovieEntity> movieEntities){
         List<Movie> output = new ArrayList<>();
         for (MovieEntity movieEntity: movieEntities) {
             output.add(new Movie(movieEntity));

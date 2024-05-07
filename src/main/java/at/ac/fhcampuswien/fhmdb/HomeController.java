@@ -23,6 +23,8 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static at.ac.fhcampuswien.fhmdb.database.MovieEntity.toMovies;
+
 
 public class HomeController implements Initializable {
 
@@ -67,17 +69,20 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             allMovies = MovieAPI.getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        for (Movie movie : allMovies) {
-            try {
+            for (Movie movie : allMovies) {
                 moviesToDB.saveMovieIfNotInDB(movie);
-            } catch (SQLException e) {
-                // Handle SQL exception
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            System.out.println("No Internet connection");
+            //ToDo exception handling: Anzeigen das Keine Internetverbindung besteht und die Movies von der Datenbank verwendet Werden
+            try {
+                allMovies = toMovies(moviesToDB.readAllMovies());
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }catch (SQLException e) {
+            // Handle SQL exception
+            e.printStackTrace();
         }
 
         observableMovies.addAll(allMovies);         // add dummy data to observable list

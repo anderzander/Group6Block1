@@ -57,10 +57,11 @@ public class Movie implements Comparable<Movie> {
         this.movieID = movieEntity.getApiId();
         this.title = movieEntity.getTitle();
 
-        String[] words = movieEntity.getGenres().split(",");
         List<Genre> genres = new ArrayList<>();
+        String[] words = movieEntity.getGenres().split(",");
         for (String string : words) {
-            genres.add(Genre.valueOf(string));
+            String genre = (string.replace(" ", ""));
+            genres.add(Genre.valueOf(genre));
         }
         this.genres = genres;
 
