@@ -68,13 +68,13 @@ public class MovieCell extends ListCell<Movie> {
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
             setGraphic(layout);
 
-            addToMovieDbButton.setOnMouseClicked(mouseEvent ->{
-                try {
-                    repository.addToWatchlist(movie);
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-                }
-            });
+//            addToMovieDbButton.setOnMouseClicked(mouseEvent ->{
+//                try {
+//                    repository.addToWatchlist(movie);
+//                } catch (SQLException e) {
+//                    System.out.println(e.getMessage());
+//                }
+//            });
         }
     }
 

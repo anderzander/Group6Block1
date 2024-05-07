@@ -40,10 +40,12 @@ public class MovieAPI {
             while (scanner.hasNext()) {
                 stringBuilder.append(scanner.nextLine());
             }
-            System.out.println(stringBuilder);  // String of everything we get from the API
+//            System.out.println(stringBuilder);  // String of everything we get from the API
 
             Gson gson = new Gson();;
-            return Arrays.asList(gson.fromJson(stringBuilder.toString(), Movie[].class));
+            String json = stringBuilder.toString();
+            json = json.replaceAll("'", "''"); // Replace single quotes with two single quotes
+            return Arrays.asList(gson.fromJson(json, Movie[].class));
         } else {
             System.out.println("Error in sending a GET request");
             return null;
