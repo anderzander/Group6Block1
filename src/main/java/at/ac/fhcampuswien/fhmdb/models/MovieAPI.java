@@ -44,7 +44,7 @@ public class MovieAPI {
 
             Gson gson = new Gson();;
             String json = stringBuilder.toString();
-            json = json.replaceAll("'", "''"); // Replace single quotes with two single quotes
+            json = json.replaceAll("'", "`"); // Replace single quotes with two single quotes
             return Arrays.asList(gson.fromJson(json, Movie[].class));
         } else {
             System.out.println("Error in sending a GET request");
