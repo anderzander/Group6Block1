@@ -28,14 +28,6 @@
             </padding>
          </Label>
          <Label styleClass="text-white" stylesheets="@styles.css" text="Welcome to FHMDb!" />
-         <Pane HBox.hgrow="ALWAYS"/>
-         <MenuButton text="Navigation">
-            <items>
-               <MenuItem text="Home" onAction="#HomeBtn"/>
-               <MenuItem text="Watchlist" onAction="#WatchlistBtn"/>
-            </items>
-         </MenuButton>
-         <Pane minWidth="5"/>
       </children>
    </HBox>
    <HBox spacing="5.0" styleClass="background-black" stylesheets="@styles.css">
@@ -47,6 +39,12 @@
          <JFXComboBox fx:id="ratingComboBox" focusColor="#f5c518" styleClass="filter-combo-box" stylesheets="@styles.css" />
          <JFXButton fx:id="searchBtn" styleClass="background-yellow" stylesheets="@styles.css" text="Filter" />
          <JFXButton fx:id="resetBtn" styleClass="background-yellow" stylesheets="@styles.css" text="Reset" />
+         <MenuButton text="Navigation">
+            <items>
+               <MenuItem text="Home" onAction="#HomeBtn"/>
+               <MenuItem text="Watchlist" onAction="#WatchlistBtn"/>
+            </items>
+         </MenuButton>
 
       </children>
       <VBox.margin>
