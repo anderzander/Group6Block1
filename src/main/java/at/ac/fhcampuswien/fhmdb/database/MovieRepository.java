@@ -14,7 +14,7 @@ public class MovieRepository {
     }
 
     public void addToWatchlist(Movie movie) throws SQLException {
-        dao.create(movieToMovieEntity(movie));
+        dao.createIfNotExists(movieToMovieEntity(movie));
     }
 
     public void removeFromWatchlist(Movie movie) throws SQLException {
@@ -22,7 +22,7 @@ public class MovieRepository {
     }
 
     private MovieEntity movieToMovieEntity(Movie movie){
-        return new MovieEntity(movie.getMovieID(), movie.getTitle());
+        return new MovieEntity(movie);
     }
 
     public List<MovieEntity> readAllContacts() throws SQLException{
