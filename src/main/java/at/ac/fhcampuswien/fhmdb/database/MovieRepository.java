@@ -28,4 +28,19 @@ public class MovieRepository {
     public List<MovieEntity> readAllContacts() throws SQLException{
         return dao.queryForAll();
     }
+
+    public boolean existsInDB(String title) throws SQLException {
+        List<MovieEntity> movies = dao.queryForEq("title", title);
+        return !movies.isEmpty();
+    }
+
+    public void saveMovieIfNotInDB (Movie movie) throws SQLException {
+        if (!existsInDB(movie.getTitle())) {
+            dao.create(movieToMovieEntity(movie));
+            System.out.println("Inserted new movie: " + movie.getTitle());
+        } else {
+            System.out.println("Movie already exists: " + movie.getTitle());
+        }
+
+    }
 }
