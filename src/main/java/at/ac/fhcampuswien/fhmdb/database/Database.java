@@ -35,10 +35,6 @@ public class Database {
         return this.dao;
     }
 
-    public void testDB() throws SQLException {
-        MovieEntity movie = new MovieEntity("testID", "TestName");
-        dao.create(movie);
-    }
 
     public static Database getDatabase(){
         if (instance == null){

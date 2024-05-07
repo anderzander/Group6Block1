@@ -14,7 +14,7 @@ public class MovieRepository {
     }
 
     public void addToWatchlist(Movie movie) throws SQLException {
-        dao.create(movieToMovieEntity(movie));
+        dao.createIfNotExists(movieToMovieEntity(movie));
     }
 
     public void removeFromWatchlist(Movie movie) throws SQLException {
@@ -24,10 +24,25 @@ public class MovieRepository {
 
 
     private MovieEntity movieToMovieEntity(Movie movie){
-        return new MovieEntity(movie.getMovieID(), movie.getTitle());
+        return new MovieEntity(movie);
     }
 //readAllMovies
     public List<MovieEntity> readAllMovies() throws SQLException{
         return dao.queryForAll();
+    }
+
+    public boolean existsInDB(String title) throws SQLException {
+        List<MovieEntity> movies = dao.queryForEq("title", title);
+        return !movies.isEmpty();
+    }
+
+    public void saveMovieIfNotInDB (Movie movie) throws SQLException {
+        if (!existsInDB(movie.getTitle())) {
+            dao.create(movieToMovieEntity(movie));
+            System.out.println("Inserted new movie: " + movie.getTitle());
+        } else {
+            System.out.println("Movie already exists: " + movie.getTitle());
+        }
+
     }
 }

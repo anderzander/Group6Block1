@@ -1,5 +1,7 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
+import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
@@ -17,6 +19,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,7 +57,7 @@ public class HomeController implements Initializable {
     private ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
 
-
+    public MovieRepository moviesToDB = new MovieRepository();
 
     public ObservableList<Movie> getObservableMovies() {
         return observableMovies;
@@ -67,6 +70,16 @@ public class HomeController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        for (Movie movie : allMovies) {
+            try {
+                moviesToDB.saveMovieIfNotInDB(movie);
+            } catch (SQLException e) {
+                // Handle SQL exception
+                e.printStackTrace();
+            }
+        }
+
         observableMovies.addAll(allMovies);         // add dummy data to observable list
 
         // initialize UI stuff
@@ -158,7 +171,6 @@ public class HomeController implements Initializable {
 
     public void filterObservableMovies(String searchField, String genreComboBox) {
 
-
         List<Movie> list1 = listFilteredByGenres(allMovies, genreComboBox);
         List<Movie> list2 = listFilteredBySearchField(allMovies, searchField);
 
@@ -175,7 +187,6 @@ public class HomeController implements Initializable {
         observableMovies = finishedFilteredList;
 
     }
-
 
     public List<Movie> listFilteredByGenres(List<Movie> MovieListToFilter, String genreComboBox) {
 
@@ -196,7 +207,6 @@ public class HomeController implements Initializable {
 
         return new ArrayList<>(filteredMovieSetByGenre);
     }
-
 
     public List<Movie> listFilteredBySearchField(List<Movie> movieList, String searchField) {
 

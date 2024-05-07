@@ -286,7 +286,6 @@ class HomeControllerTest {
         directorList4.add("director1");
         directorList4.add("director4");
 
-
         Movie a = new Movie("", "", new ArrayList<>(), 0, "", "", 0, directorList1, new ArrayList<>(), new ArrayList<>(), 0.0);
         Movie b = new Movie("", "", new ArrayList<>(), 0, "", "", 0, directorList2, new ArrayList<>(), new ArrayList<>(), 0.0);
         Movie c = new Movie("", "", new ArrayList<>(), 0, "", "", 0, directorList3, new ArrayList<>(), new ArrayList<>(), 0.0);
@@ -299,6 +298,7 @@ class HomeControllerTest {
         sampleMovies.add(d);
 
         //when
+                //parametrized tests
         long actual = HomeController.countMoviesFrom(sampleMovies,"director4");
         long expected = 2;
 
