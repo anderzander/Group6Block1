@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -47,6 +48,7 @@ public class HomeController implements Initializable {
 
     public static List<Movie> allMovies = new ArrayList<>();
     public static List<Integer> releaseYearList = new ArrayList<>();
+
 
 
     private ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
@@ -243,5 +245,12 @@ public class HomeController implements Initializable {
 
     }
 
+
+
+    public void HomeBtn(ActionEvent actionEvent) {
+    }
+
+    public void WatchlistBtn(ActionEvent actionEvent) {
+    }
 }
 

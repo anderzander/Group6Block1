@@ -19,13 +19,15 @@ public class MovieRepository {
 
     public void removeFromWatchlist(Movie movie) throws SQLException {
         dao.delete(movieToMovieEntity(movie));
+
     }
+
 
     private MovieEntity movieToMovieEntity(Movie movie){
         return new MovieEntity(movie.getMovieID(), movie.getTitle());
     }
-
-    public List<MovieEntity> readAllContacts() throws SQLException{
+//readAllMovies
+    public List<MovieEntity> readAllMovies() throws SQLException{
         return dao.queryForAll();
     }
 }

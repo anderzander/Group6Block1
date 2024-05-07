@@ -27,7 +27,7 @@ public class FhmdbApplication extends Application {
     public static void main(String[] args) throws IOException {
         //System.out.println(HomeController.getMostPopularActor(HomeController.allMovies));
         //printMoviesDetails(getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies"));
-        launch();
+        launch(); //warum nicht in start?
 //        try {
 //            Database.getDatabase().testDB();
 //        } catch (SQLException e) {
