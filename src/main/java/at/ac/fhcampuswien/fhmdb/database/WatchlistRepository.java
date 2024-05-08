@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WatchlistRepository {
-    private Dao<WatchlistMovieEntity, Long> daoWatchlistRepo;
+    private  Dao<WatchlistMovieEntity, Long> daoWatchlistRepo;
 
     public WatchlistRepository() {
         this.daoWatchlistRepo = Database.getDatabase().getWatchlistDao();
@@ -35,21 +35,23 @@ public class WatchlistRepository {
 
     }
 
-    public List<Movie> getMoviesFromWatchlist() throws SQLException {
+    public  List<Movie> getMoviesFromWatchlist() throws SQLException {
 
         Dao<MovieEntity, Long> daoMovieRepo = Database.getDatabase().getMovieDao();
 
-        List<MovieEntity> movieEntities = daoMovieRepo.queryBuilder()
-                .join(daoMovieRepo.queryBuilder())
-                .where()
-                .eq("apiId", "apiID")
-                .query();
+
+        List<MovieEntity> entities = new ArrayList<>();
+
+        for (WatchlistMovieEntity entity : this.getWatchlist()) {
+            List<MovieEntity> temp = daoMovieRepo.queryForEq("apiId", entity.getApiId());
+            entities.addAll(temp);
+        }
 
         List<Movie> moviesFromWatchlist = new ArrayList<>();
-
-        for (MovieEntity entity : movieEntities) {
-        moviesFromWatchlist.add(new Movie(entity));
+        for (MovieEntity entity: entities) {
+            moviesFromWatchlist.add(new Movie(entity));
         }
+
         return moviesFromWatchlist;
     }
 

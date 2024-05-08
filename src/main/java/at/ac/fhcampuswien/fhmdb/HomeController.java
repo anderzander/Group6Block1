@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
 import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
+import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
@@ -165,20 +166,28 @@ public class HomeController implements Initializable {
 
         });
         homeBtn.setOnAction(actionEvent -> {
-            movieListView.setVisible(true);
-            watchlistView.setVisible(false);
-            movieListView.toFront();
             releaseYearComboBox.setVisible(true);
             ratingComboBox.setVisible(true);
+            try {
+                allMovies = toMovies(moviesToDB.readAllMovies());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            observableMovies.clear();
+            observableMovies.addAll(allMovies);
+
 
         });
         watchlistBtn.setOnAction(actionEvent -> {
-            watchlistView.setVisible(true);
-            movieListView.setVisible(false);
-            watchlistView.toFront();
             releaseYearComboBox.setVisible(false);
             ratingComboBox.setVisible(false);
-
+            try {
+                WatchlistRepository repository = new WatchlistRepository();
+                observableMovies.clear();
+                observableMovies.addAll(repository.getMoviesFromWatchlist());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         });
 
 
