@@ -68,7 +68,7 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            allMovies = MovieAPI.getMoviesFromApi("https://prog2.fh-cafampuswien.ac.at/movies");
+            allMovies = MovieAPI.getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies");
             for (Movie movie : allMovies) {
                 moviesToDB.saveMovieIfNotInDB(movie);
             }
