@@ -202,6 +202,8 @@ public class HomeController implements Initializable {
                 observableMovies.addAll(repository.getMoviesFromWatchlist());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
+            } catch (Exception e){
+
             }
         });
 
