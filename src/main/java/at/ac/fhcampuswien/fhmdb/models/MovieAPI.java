@@ -59,7 +59,7 @@ public class MovieAPI {
 
             }
         } catch (IOException e) {
-            throw new MovieApiException();
+            throw new MovieApiException("Method getMoviesFromApi didn't work",e);
         }
     }
 
