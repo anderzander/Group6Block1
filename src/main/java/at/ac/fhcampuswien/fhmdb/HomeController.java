@@ -206,6 +206,8 @@ public class HomeController implements Initializable {
             }
             observableMovies.clear();
             observableMovies.addAll(allMovies);
+
+
         });
         watchlistBtn.setOnAction(actionEvent -> {
             releaseYearComboBox.setVisible(false);
@@ -222,7 +224,7 @@ public class HomeController implements Initializable {
                 observableMovies.addAll(repository.getMoviesFromWatchlist());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
-            }catch (Exception e){
+            } catch (Exception e){
 
             }
         });
