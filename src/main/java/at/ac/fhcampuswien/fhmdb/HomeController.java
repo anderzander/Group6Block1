@@ -183,11 +183,6 @@ public class HomeController implements Initializable {
         homeBtn.setOnAction(actionEvent -> {
             releaseYearComboBox.setVisible(true);
             ratingComboBox.setVisible(true);
-            try {
-                allMovies = toMovies(moviesToDB.readAllMovies());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
             observableMovies.clear();
             observableMovies.addAll(allMovies);
 

@@ -41,6 +41,10 @@ public class WatchlistRepository {
 
     }
 
+    public void removeFromWatchlist(Movie movie) throws SQLException {
+        daoWatchlistRepo.delete(new WatchlistMovieEntity(movie));
+    }
+
     public  List<Movie> getMoviesFromWatchlist() throws SQLException, DatabaseException {
 
         Dao<MovieEntity, Long> daoMovieRepo = Database.getDatabase().getMovieDao();
