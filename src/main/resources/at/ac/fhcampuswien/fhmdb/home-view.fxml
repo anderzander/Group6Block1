@@ -9,10 +9,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.StackPane?>
 <VBox prefHeight="331.0" prefWidth="570.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.fhmdb.HomeController">
    <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="347.0" spacing="20.0" style="-fx-background-color: black;">
       <padding>
@@ -41,8 +40,8 @@
          <JFXButton fx:id="resetBtn" styleClass="background-yellow" stylesheets="@styles.css" text="Reset" />
          <MenuButton text="Navigation">
             <items>
-               <MenuItem text="Home" onAction="#HomeBtn"/>
-               <MenuItem text="Watchlist" onAction="#WatchlistBtn"/>
+               <MenuItem fx:id="homeBtn" text="Home"/>
+               <MenuItem fx:id="watchlistBtn" text="Watchlist"/>
             </items>
          </MenuButton>
 
@@ -54,5 +53,9 @@
          <Insets bottom="20.0" left="10.0" top="20.0" />
       </padding>
    </HBox>
-   <JFXListView fx:id="movieListView" styleClass="background-black" style="-fx-background-color: black;" stylesheets="@styles.css" VBox.vgrow="ALWAYS" />
+   <StackPane VBox.vgrow="ALWAYS">
+      <JFXListView fx:id="movieListView" styleClass="background-black" style="-fx-background-color: black;" stylesheets="@styles.css" />
+      <JFXListView fx:id="watchlistView" styleClass="background-black" style="-fx-background-color: black;" stylesheets="@styles.css" visible="false" />
+   </StackPane>
+
 </VBox>

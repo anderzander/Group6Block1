@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -37,7 +38,8 @@ public class HomeController implements Initializable {
 
     @FXML
     public JFXListView movieListView;
-
+    @FXML
+    public JFXListView watchlistView;
     @FXML
     public JFXComboBox genreComboBox;
     @FXML
@@ -49,6 +51,13 @@ public class HomeController implements Initializable {
     public JFXButton sortBtn;
     @FXML
     public JFXButton resetBtn;
+    @FXML
+    public MenuItem homeBtn;
+
+    @FXML
+    public MenuItem watchlistBtn;
+
+
 
 
     public static List<Movie> allMovies = new ArrayList<>();
@@ -90,6 +99,8 @@ public class HomeController implements Initializable {
         // initialize UI stuff
         movieListView.setItems(observableMovies);   // set data of observable list to list view
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
+
+
 
         // TODO add genre filter items with genreComboBox.getItems().addAll(...)
         genreComboBox.setPromptText("Filter by Genre");
@@ -154,6 +165,23 @@ public class HomeController implements Initializable {
             }
 
         });
+        homeBtn.setOnAction(actionEvent -> {
+            movieListView.setVisible(true);
+            watchlistView.setVisible(false);
+            movieListView.toFront();
+            releaseYearComboBox.setVisible(true);
+            ratingComboBox.setVisible(true);
+
+        });
+        watchlistBtn.setOnAction(actionEvent -> {
+            watchlistView.setVisible(true);
+            movieListView.setVisible(false);
+            watchlistView.toFront();
+            releaseYearComboBox.setVisible(false);
+            ratingComboBox.setVisible(false);
+
+        });
+
 
     }
 
@@ -262,10 +290,6 @@ public class HomeController implements Initializable {
 
 
 
-    public void HomeBtn(ActionEvent actionEvent) {
-    }
 
-    public void WatchlistBtn(ActionEvent actionEvent) {
-    }
 }
 
