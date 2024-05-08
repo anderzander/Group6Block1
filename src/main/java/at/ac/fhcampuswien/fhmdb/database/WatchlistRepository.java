@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.dao.Dao;
 
@@ -9,8 +10,13 @@ import java.util.List;
 public class WatchlistRepository {
     private Dao<WatchlistMovieEntity, Long> daoWatchlistRepo;
 
-    public WatchlistRepository() {
-        this.daoWatchlistRepo = Database.getDatabase().getWatchlistDao();
+    public WatchlistRepository() throws DatabaseException {
+        try {
+            this.daoWatchlistRepo = Database.getDatabase().getWatchlistDao();
+        } catch (DatabaseException e) {
+            throw new DatabaseException("GetDatabase didn't work properly", e);
+        }
+
     }
 
     public  List<WatchlistMovieEntity> getWatchlist() throws SQLException {

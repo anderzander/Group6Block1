@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
 
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -23,14 +24,14 @@ public class Database {
 
     private static Database instance;
 
-    private  Database(){
+    private  Database() throws DatabaseException {
         try {
             createConnectionSource();
             movieDao = DaoManager.createDao(connectionSource, MovieEntity.class);
             watchlistDao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
             createTables();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException | NullPointerException e) {
+            throw new DatabaseException(e);
         }
 
     }
@@ -43,10 +44,14 @@ public class Database {
     }
 
 
-    public static Database getDatabase(){
+    public static Database getDatabase() throws DatabaseException {
+        try {
         if (instance == null){
             instance = new Database();
         }
+        } catch (DatabaseException e) {
+                throw new DatabaseException(e);
+            }
         return instance;
     }
 
