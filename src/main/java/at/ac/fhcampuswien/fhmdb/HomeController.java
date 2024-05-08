@@ -62,11 +62,16 @@ public class HomeController implements Initializable {
     public MenuItem watchlistBtn;
 
 
+    static boolean inHomeNavigation = true;
+
+
+
     public static List<Movie> allMovies = new ArrayList<>();
     public static List<Integer> releaseYearList = new ArrayList<>();
 
 
-    private ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
+
+    private static ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
 
     public MovieRepository moviesToDB;
@@ -74,6 +79,12 @@ public class HomeController implements Initializable {
     public ObservableList<Movie> getObservableMovies() {
         return observableMovies;
     }
+
+    public  static boolean isInHomeNavigation() {
+        return inHomeNavigation;
+    }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -85,6 +96,7 @@ public class HomeController implements Initializable {
             showErrorPopup("Couldn't create moviesToDB in HomeController (Nullpointer)", e.getMessage());
         }
 
+
         try {
             allMovies = MovieAPI.getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies");
             for (Movie movie : allMovies) {
@@ -92,6 +104,7 @@ public class HomeController implements Initializable {
             }
         } catch (NullPointerException e) {
             showErrorPopup("No connection to API", e.getMessage());
+            //ToDo exception handling: Anzeigen das Keine Internetverbindung besteht und die Movies von der Datenbank verwendet Werden
             try {
                 allMovies = toMovies(moviesToDB.readAllMovies());
             } catch (SQLException | NullPointerException ex) {
@@ -111,6 +124,7 @@ public class HomeController implements Initializable {
         // initialize UI stuff
         movieListView.setItems(observableMovies);   // set data of observable list to list view
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
+
 
 
         // TODO add genre filter items with genreComboBox.getItems().addAll(...)
@@ -179,6 +193,16 @@ public class HomeController implements Initializable {
         homeBtn.setOnAction(actionEvent -> {
             releaseYearComboBox.setVisible(true);
             ratingComboBox.setVisible(true);
+            try {
+                allMovies = toMovies(moviesToDB.readAllMovies());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            resetBtn.setVisible(true);
+            searchBtn.setVisible(true);
+            searchField.setVisible(true);
+            genreComboBox.setVisible(true);
+            inHomeNavigation = true;
             observableMovies.clear();
             observableMovies.addAll(allMovies);
 
@@ -187,6 +211,12 @@ public class HomeController implements Initializable {
         watchlistBtn.setOnAction(actionEvent -> {
             releaseYearComboBox.setVisible(false);
             ratingComboBox.setVisible(false);
+            resetBtn.setVisible(false);
+            searchBtn.setVisible(false);
+            searchField.setVisible(false);
+            genreComboBox.setVisible(false);
+            inHomeNavigation = false;
+
             try {
                 WatchlistRepository repository = new WatchlistRepository();
                 observableMovies.clear();
@@ -200,6 +230,17 @@ public class HomeController implements Initializable {
 
 
     }
+
+    public static void refreshWatchlist(){
+        try {
+            WatchlistRepository repository = new WatchlistRepository();
+            observableMovies.clear();
+            observableMovies.addAll(repository.getMoviesFromWatchlist());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e){}
+    }
+
 
     public void sortObservableMovies(String textFromSortBtn) {
         if (textFromSortBtn.equals("Sort (asc)")) {

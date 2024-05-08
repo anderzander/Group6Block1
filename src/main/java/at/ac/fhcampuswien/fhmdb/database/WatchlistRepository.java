@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.fhmdb.database;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
@@ -41,8 +42,14 @@ public class WatchlistRepository {
 
     }
 
+    public Dao<WatchlistMovieEntity, Long> getDaoWatchlistRepo() {
+        return daoWatchlistRepo;
+    }
+
     public void removeFromWatchlist(Movie movie) throws SQLException {
-        daoWatchlistRepo.delete(new WatchlistMovieEntity(movie));
+        DeleteBuilder<WatchlistMovieEntity, Long> deleteBuilder = daoWatchlistRepo.deleteBuilder();
+        deleteBuilder.where().eq("apiId", movie.getMovieID());
+        deleteBuilder.delete();
     }
 
     public  List<Movie> getMoviesFromWatchlist() throws SQLException, DatabaseException {
