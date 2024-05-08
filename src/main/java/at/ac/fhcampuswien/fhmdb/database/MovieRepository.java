@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.dao.Dao;
 
@@ -9,8 +10,13 @@ import java.util.List;
 public class MovieRepository {
     private Dao<MovieEntity, Long> daoMovieRepo;
 
-    public MovieRepository() {
-        this.daoMovieRepo = Database.getDatabase().getMovieDao();
+    public MovieRepository() throws DatabaseException {
+        try {
+            this.daoMovieRepo = Database.getDatabase().getMovieDao();
+        } catch (Exception e) {
+            throw new DatabaseException("Error in MovieRepository",e);
+        }
+
     }
 
 
@@ -24,13 +30,19 @@ public class MovieRepository {
         return !movies.isEmpty();
     }
 
-    public void saveMovieIfNotInDB(Movie movie) throws SQLException {
-        if (!movieExistsInDB(movie.getTitle())) {
-            daoMovieRepo.create(new MovieEntity(movie));
-            System.out.println("Inserted new movie: " + movie.getTitle());
-        } else {
+    public void saveMovieIfNotInDB(Movie movie) throws SQLException, DatabaseException {
+
+        if (!movieExistsInDB(movie.getTitle()))
+            try {
+                daoMovieRepo.create(new MovieEntity(movie));
+                System.out.println("Inserted new movie: " + movie.getTitle());
+            } catch (Exception e) {
+                throw new DatabaseException("GetDatabase didn't work properly", e);
+            }
+        else {
             System.out.println("Movie already exists: " + movie.getTitle());
         }
+
 
     }
 }

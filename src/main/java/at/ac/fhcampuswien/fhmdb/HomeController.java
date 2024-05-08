@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.fhmdb;
 import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
 import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
@@ -18,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -54,6 +56,7 @@ public class HomeController implements Initializable {
     public JFXButton resetBtn;
     @FXML
     public MenuItem homeBtn;
+
     @FXML
     public MenuItem watchlistBtn;
 
@@ -68,7 +71,7 @@ public class HomeController implements Initializable {
     private ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
 
-    public MovieRepository moviesToDB = new MovieRepository();
+    public MovieRepository moviesToDB;
 
     public ObservableList<Movie> getObservableMovies() {
         return observableMovies;
@@ -77,21 +80,33 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            moviesToDB = new MovieRepository();
+        } catch (DatabaseException e) {
+            showErrorPopup("Couldn't create moviesToDB in HomeController", e.getMessage());
+        } catch (Exception e) {
+            showErrorPopup("Couldn't create moviesToDB in HomeController (Nullpointer)", e.getMessage());
+        }
+
+
+        try {
             allMovies = MovieAPI.getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies");
             for (Movie movie : allMovies) {
                 moviesToDB.saveMovieIfNotInDB(movie);
             }
-        } catch (IOException e) {
-            System.out.println("No Internet connection");
+        } catch (IOException |NullPointerException e) {
+            showErrorPopup("No connection to API", e.getMessage());
             //ToDo exception handling: Anzeigen das Keine Internetverbindung besteht und die Movies von der Datenbank verwendet Werden
             try {
                 allMovies = toMovies(moviesToDB.readAllMovies());
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
+            } catch (SQLException | NullPointerException ex) {
+                showErrorPopup("Couldn't get movies from database", e.getMessage());
             }
         }catch (SQLException e) {
             // Handle SQL exception
             e.printStackTrace();
+        }
+        catch (DatabaseException e) {
+            showErrorPopup("Something went wrong with the database", e.getMessage());
         }
 
         observableMovies.addAll(allMovies);         // add dummy data to observable list
@@ -296,7 +311,23 @@ public class HomeController implements Initializable {
 
     }
 
+    public void showErrorPopup(String error,String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Something went wrong, buddy!");
+        alert.setHeaderText(error);
+        //Important: message has to be e.message!
+        alert.setContentText(message);
 
+        ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(closeButton);
+
+        // Get the close button and attach an event handler to close the dialog
+        Button closeButtonNode = (Button) alert.getDialogPane().lookupButton(closeButton);
+        closeButtonNode.setOnAction(e -> alert.close());
+
+        alert.showAndWait();
+
+    }
 
 
 }
