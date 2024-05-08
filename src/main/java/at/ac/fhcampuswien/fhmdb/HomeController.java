@@ -93,7 +93,6 @@ public class HomeController implements Initializable {
             }
         } catch (IOException |NullPointerException e) {
             showErrorPopup("No connection to API", e.getMessage());
-            //ToDo exception handling: Anzeigen das Keine Internetverbindung besteht und die Movies von der Datenbank verwendet Werden
             try {
                 allMovies = toMovies(moviesToDB.readAllMovies());
             } catch (SQLException | NullPointerException ex) {
