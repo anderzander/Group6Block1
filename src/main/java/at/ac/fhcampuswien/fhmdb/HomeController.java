@@ -73,12 +73,12 @@ public class HomeController implements Initializable {
         } catch (DatabaseException e) {
             showErrorPopup("Couldn't create moviesToDB in HomeController", e.getMessage());
         } catch (Exception e) {
-            showErrorPopup("CTest", e.getMessage());
+            showErrorPopup("Couldn't create moviesToDB in HomeController (Nullpointer)", e.getMessage());
         }
 
 
         try {
-            allMovies = MovieAPI.getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movi");
+            allMovies = MovieAPI.getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies");
             for (Movie movie : allMovies) {
                 moviesToDB.saveMovieIfNotInDB(movie);
             }
