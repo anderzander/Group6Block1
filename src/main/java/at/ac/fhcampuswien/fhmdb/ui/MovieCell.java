@@ -1,5 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
+import at.ac.fhcampuswien.fhmdb.HomeController;
+import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import at.ac.fhcampuswien.fhmdb.database.Database;
@@ -17,6 +19,7 @@ import javafx.scene.paint.Color;
 import java.sql.SQLException;
 
 import static at.ac.fhcampuswien.fhmdb.HomeController.isInHomeNavigation;
+import static at.ac.fhcampuswien.fhmdb.HomeController.refreshWatchlist;
 
 public class MovieCell extends ListCell<Movie> {
     private final Label title = new Label();
@@ -76,20 +79,23 @@ public class MovieCell extends ListCell<Movie> {
             layout.spacingProperty().set(10);
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
             setGraphic(layout);
+            if (isInHomeNavigation()){
+                addToMovieDbButton.setText("Add to watchlist");
+            } else {
+                addToMovieDbButton.setText("Remove from watchlist");
+            }
 
             addToMovieDbButton.setOnMouseClicked(mouseEvent ->{
                 if(isInHomeNavigation()){
-                    addToMovieDbButton.setText("Add to watchlist");
-
                 try {
                    watchlistRepository.saveWatchlistEntityIfNotInDB(movie);
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
                 }else{
-                    addToMovieDbButton.setText("Remove from watchlist");
                     try {
                         watchlistRepository.removeFromWatchlist(movie);
+                        refreshWatchlist();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }

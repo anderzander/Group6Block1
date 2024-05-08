@@ -70,7 +70,7 @@ public class HomeController implements Initializable {
 
 
 
-    private ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
+    private static ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
 
     public MovieRepository moviesToDB;
@@ -228,6 +228,17 @@ public class HomeController implements Initializable {
 
 
     }
+
+    public static void refreshWatchlist(){
+        try {
+            WatchlistRepository repository = new WatchlistRepository();
+            observableMovies.clear();
+            observableMovies.addAll(repository.getMoviesFromWatchlist());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e){}
+    }
+
 
     public void sortObservableMovies(String textFromSortBtn) {
         if (textFromSortBtn.equals("Sort (asc)")) {
