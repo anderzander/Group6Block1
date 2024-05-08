@@ -53,7 +53,6 @@ public class HomeController implements Initializable {
     public JFXButton resetBtn;
     @FXML
     public MenuItem homeBtn;
-
     @FXML
     public MenuItem watchlistBtn;
 
