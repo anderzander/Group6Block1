@@ -88,6 +88,11 @@ public class MovieCell extends ListCell<Movie> {
                 }
                 }else{
                     addToMovieDbButton.setText("Remove from watchlist");
+                    try {
+                        watchlistRepository.removeFromWatchlist(movie);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             });
         }
