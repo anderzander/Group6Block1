@@ -7,38 +7,26 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class MovieRepository {
-    private Dao<MovieEntity, Long> dao;
+    private Dao<MovieEntity, Long> daoMovieRepo;
 
     public MovieRepository() {
-        this.dao = Database.getDatabase().getDao();
+        this.daoMovieRepo = Database.getDatabase().getMovieDao();
     }
 
-    public void addToWatchlist(Movie movie) throws SQLException {
-
-    }
-
-    public void removeFromWatchlist(Movie movie) throws SQLException {
-
-    }
-
-
-    private MovieEntity movieToMovieEntity(Movie movie) {
-        return new MovieEntity(movie);
-    }
 
     //readAllMovies
     public List<MovieEntity> readAllMovies() throws SQLException {
-        return dao.queryForAll();
+        return daoMovieRepo.queryForAll();
     }
 
-    public boolean existsInDB(String title) throws SQLException {
-        List<MovieEntity> movies = dao.queryForEq("title", title);
+    public boolean movieExistsInDB(String title) throws SQLException {
+        List<MovieEntity> movies = daoMovieRepo.queryForEq("title", title);
         return !movies.isEmpty();
     }
 
     public void saveMovieIfNotInDB(Movie movie) throws SQLException {
-        if (!existsInDB(movie.getTitle())) {
-            dao.create(movieToMovieEntity(movie));
+        if (!movieExistsInDB(movie.getTitle())) {
+            daoMovieRepo.create(new MovieEntity(movie));
             System.out.println("Inserted new movie: " + movie.getTitle());
         } else {
             System.out.println("Movie already exists: " + movie.getTitle());

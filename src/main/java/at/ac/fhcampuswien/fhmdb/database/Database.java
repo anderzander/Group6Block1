@@ -18,14 +18,16 @@ public class Database {
 
     private static ConnectionSource connectionSource;
 
-    private Dao<MovieEntity, Long> dao;
+    private Dao<MovieEntity, Long> movieDao;
+    private Dao<WatchlistMovieEntity, Long> watchlistDao;
 
     private static Database instance;
 
     private  Database(){
         try {
             createConnectionSource();
-            dao = DaoManager.createDao(connectionSource, MovieEntity.class);
+            movieDao = DaoManager.createDao(connectionSource, MovieEntity.class);
+            watchlistDao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
             createTables();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -33,8 +35,11 @@ public class Database {
 
     }
 
-    public Dao<MovieEntity, Long> getDao() {
-        return this.dao;
+    public Dao<MovieEntity, Long> getMovieDao() {
+        return this.movieDao;
+    }
+    public Dao<WatchlistMovieEntity, Long> getWatchlistDao() {
+        return this.watchlistDao;
     }
 
 
@@ -46,11 +51,11 @@ public class Database {
     }
 
     private static void createConnectionSource() throws SQLException {
-
         connectionSource = new JdbcConnectionSource(DB_URL, user, password);
     }
 
     private static void createTables() throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, MovieEntity.class);
+        TableUtils.createTableIfNotExists(connectionSource, WatchlistMovieEntity.class);
     }
 }

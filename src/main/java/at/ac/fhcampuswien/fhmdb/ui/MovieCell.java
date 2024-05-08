@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.fhmdb.ui;
 
 import at.ac.fhcampuswien.fhmdb.database.Database;
 import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
+import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -24,7 +25,7 @@ public class MovieCell extends ListCell<Movie> {
     private final Button addToMovieDbButton = new Button("Add to watchlist");
     private final VBox layout = new VBox(title, detail, genres, releaseYear, rating, addToMovieDbButton);
     private double sceneWith;
-    MovieRepository repository = new MovieRepository();
+    WatchlistRepository watchlistRepository = new WatchlistRepository();
 
     @Override
     protected void updateItem(Movie movie, boolean empty) {
@@ -68,13 +69,13 @@ public class MovieCell extends ListCell<Movie> {
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
             setGraphic(layout);
 
-//            addToMovieDbButton.setOnMouseClicked(mouseEvent ->{
-//                try {
-//                    repository.addToWatchlist(movie);
-//                } catch (SQLException e) {
-//                    System.out.println(e.getMessage());
-//                }
-//            });
+            addToMovieDbButton.setOnMouseClicked(mouseEvent ->{
+                try {
+                   watchlistRepository.saveWatchlistEntityIfNotInDB(movie);
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            });
         }
     }
 
