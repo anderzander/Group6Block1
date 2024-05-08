@@ -60,11 +60,8 @@ public class HomeController implements Initializable {
     public MenuItem watchlistBtn;
 
 
-
-
     public static List<Movie> allMovies = new ArrayList<>();
     public static List<Integer> releaseYearList = new ArrayList<>();
-
 
 
     private ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
@@ -91,18 +88,17 @@ public class HomeController implements Initializable {
             for (Movie movie : allMovies) {
                 moviesToDB.saveMovieIfNotInDB(movie);
             }
-        } catch (IOException |NullPointerException e) {
+        } catch (IOException | NullPointerException e) {
             showErrorPopup("No connection to API", e.getMessage());
             try {
                 allMovies = toMovies(moviesToDB.readAllMovies());
             } catch (SQLException | NullPointerException ex) {
                 showErrorPopup("Couldn't get movies from database", e.getMessage());
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             // Handle SQL exception
             e.printStackTrace();
-        }
-        catch (DatabaseException e) {
+        } catch (DatabaseException e) {
             showErrorPopup("Something went wrong with the database", e.getMessage());
         }
 
@@ -113,7 +109,6 @@ public class HomeController implements Initializable {
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
 
 
-
         // TODO add genre filter items with genreComboBox.getItems().addAll(...)
         genreComboBox.setPromptText("Filter by Genre");
         genreComboBox.getItems().addAll(Genre.values());
@@ -122,7 +117,7 @@ public class HomeController implements Initializable {
         ratingComboBox.getItems().addAll(Rating.getAllValues());
         releaseYearComboBox.setPromptText("Filter by Release Year");
         for (Movie movie : allMovies) {
-            if (!releaseYearList.contains(movie.getReleaseYear())){
+            if (!releaseYearList.contains(movie.getReleaseYear())) {
                 releaseYearList.add(movie.getReleaseYear());
             }
         }
@@ -279,7 +274,8 @@ public class HomeController implements Initializable {
         // Den Schauspieler mit den meisten Filmen als String zurückgeben
         return mostPopularActor.map(Map.Entry::getKey).orElse("");
     }
-    public static int getLongestMovieTitle(List<Movie> movieList){
+
+    public static int getLongestMovieTitle(List<Movie> movieList) {
         return movieList.stream()
                 .map(Movie::getTitle)   //Umwandlung String Movie zu Stream Movie
                 .max(Comparator.comparingInt(String::length))   // mit Compare den längsten Film finden
@@ -287,20 +283,22 @@ public class HomeController implements Initializable {
                 .orElse(0);              // es wird 0 zurück gegebn, wenn kein Title in der Liste is
 
     }
-    public static long countMoviesFrom(List<Movie> movieList,String director) {
+
+    public static long countMoviesFrom(List<Movie> movieList, String director) {
         return movieList.stream()
                 .filter(movie -> movie.getDirectors().contains(director))
                 .count();
     }
-    public static List<Movie> getMoviesBetweenYears(List<Movie> movieList,int startYear, int endYear) {
+
+    public static List<Movie> getMoviesBetweenYears(List<Movie> movieList, int startYear, int endYear) {
         return movieList.stream()
-                .filter(movie -> movie.releaseYear >= startYear && movie.releaseYear<= endYear)
+                .filter(movie -> movie.releaseYear >= startYear && movie.releaseYear <= endYear)
                 .collect(Collectors.toList());
 
 
     }
 
-    public void showErrorPopup(String error,String message) {
+    public void showErrorPopup(String error, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Something went wrong, buddy!");
         alert.setHeaderText(error);
