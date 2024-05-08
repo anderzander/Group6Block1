@@ -4,6 +4,7 @@ import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
 import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
@@ -89,7 +90,7 @@ public class HomeController implements Initializable {
             for (Movie movie : allMovies) {
                 moviesToDB.saveMovieIfNotInDB(movie);
             }
-        } catch (IOException | NullPointerException e) {
+        } catch (NullPointerException e) {
             showErrorPopup("No connection to API", e.getMessage());
             try {
                 allMovies = toMovies(moviesToDB.readAllMovies());
@@ -101,6 +102,8 @@ public class HomeController implements Initializable {
             e.printStackTrace();
         } catch (DatabaseException e) {
             showErrorPopup("Something went wrong with the database", e.getMessage());
+        } catch (MovieApiException e) {
+            showErrorPopup("Couldn't get movies from API", e.getMessage());
         }
 
         observableMovies.addAll(allMovies);         // add dummy data to observable list
@@ -145,8 +148,8 @@ public class HomeController implements Initializable {
 
             try {
                 allMovies = MovieAPI.getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (MovieApiException e) {
+                showErrorPopup("Couldn't get movies from API", e.getMessage());
             }
 
             observableMovies.addAll(allMovies);
@@ -161,8 +164,8 @@ public class HomeController implements Initializable {
             try {
                 allMovies = MovieAPI.getMoviesFromApi(MovieAPI.urlForFilteredList(releaseYearComboBox.getValue(), ratingComboBox.getValue()));
                 System.out.println(MovieAPI.urlForFilteredList(releaseYearComboBox.getValue(), ratingComboBox.getValue()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (MovieApiException e) {
+                showErrorPopup("Couldn't get movies from API", e.getMessage());
             }
 
 
@@ -189,8 +192,8 @@ public class HomeController implements Initializable {
                 observableMovies.clear();
                 observableMovies.addAll(repository.getMoviesFromWatchlist());
             } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } catch (Exception e){
+                showErrorPopup("Couldn't get movies from API", e.getMessage());
+            } catch (Exception e) {
 
             }
         });
