@@ -188,22 +188,19 @@ public class HomeController implements Initializable {
             }
 
         });
-
         homeBtn.setOnAction(actionEvent -> {
             releaseYearComboBox.setVisible(true);
             ratingComboBox.setVisible(true);
-            resetBtn.setVisible(true);
-            searchBtn.setVisible(true);
-            searchField.setVisible(true);
-            genreComboBox.setVisible(true);
-            inHomeNavigation = true;
-
-
             try {
                 allMovies = toMovies(moviesToDB.readAllMovies());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+            resetBtn.setVisible(true);
+            searchBtn.setVisible(true);
+            searchField.setVisible(true);
+            genreComboBox.setVisible(true);
+            inHomeNavigation = true;
             observableMovies.clear();
             observableMovies.addAll(allMovies);
 
