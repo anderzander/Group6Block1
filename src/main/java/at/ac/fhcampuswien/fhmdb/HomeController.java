@@ -86,7 +86,6 @@ public class HomeController implements Initializable {
             showErrorPopup("Couldn't create moviesToDB in HomeController (Nullpointer)", e.getMessage());
         }
 
-
         try {
             allMovies = MovieAPI.getMoviesFromApi("https://prog2.fh-campuswien.ac.at/movies");
             for (Movie movie : allMovies) {
