@@ -41,7 +41,7 @@ public class WatchlistRepository {
 
     }
 
-    public  List<Movie> getMoviesFromWatchlist() throws SQLException {
+    public  List<Movie> getMoviesFromWatchlist() throws SQLException, DatabaseException {
 
         Dao<MovieEntity, Long> daoMovieRepo = Database.getDatabase().getMovieDao();
 

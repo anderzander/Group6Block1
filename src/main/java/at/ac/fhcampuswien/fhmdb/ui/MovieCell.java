@@ -16,6 +16,8 @@ import javafx.scene.paint.Color;
 
 import java.sql.SQLException;
 
+import static at.ac.fhcampuswien.fhmdb.HomeController.isInHomeNavigation;
+
 public class MovieCell extends ListCell<Movie> {
     private final Label title = new Label();
     private final Label detail = new Label();
@@ -76,10 +78,16 @@ public class MovieCell extends ListCell<Movie> {
             setGraphic(layout);
 
             addToMovieDbButton.setOnMouseClicked(mouseEvent ->{
+                if(isInHomeNavigation()){
+                    addToMovieDbButton.setText("Add to watchlist");
+
                 try {
                    watchlistRepository.saveWatchlistEntityIfNotInDB(movie);
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
+                }
+                }else{
+                    addToMovieDbButton.setText("Remove from watchlist");
                 }
             });
         }

@@ -61,6 +61,8 @@ public class HomeController implements Initializable {
     public MenuItem watchlistBtn;
 
 
+    static boolean inHomeNavigation = true;
+
 
 
     public static List<Movie> allMovies = new ArrayList<>();
@@ -76,6 +78,12 @@ public class HomeController implements Initializable {
     public ObservableList<Movie> getObservableMovies() {
         return observableMovies;
     }
+
+    public  static boolean isInHomeNavigation() {
+        return inHomeNavigation;
+    }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -180,9 +188,17 @@ public class HomeController implements Initializable {
             }
 
         });
+
         homeBtn.setOnAction(actionEvent -> {
             releaseYearComboBox.setVisible(true);
             ratingComboBox.setVisible(true);
+            resetBtn.setVisible(true);
+            searchBtn.setVisible(true);
+            searchField.setVisible(true);
+            genreComboBox.setVisible(true);
+            inHomeNavigation = true;
+
+
             try {
                 allMovies = toMovies(moviesToDB.readAllMovies());
             } catch (SQLException e) {
@@ -190,18 +206,24 @@ public class HomeController implements Initializable {
             }
             observableMovies.clear();
             observableMovies.addAll(allMovies);
-
-
         });
         watchlistBtn.setOnAction(actionEvent -> {
             releaseYearComboBox.setVisible(false);
             ratingComboBox.setVisible(false);
+            resetBtn.setVisible(false);
+            searchBtn.setVisible(false);
+            searchField.setVisible(false);
+            genreComboBox.setVisible(false);
+            inHomeNavigation = false;
+
             try {
                 WatchlistRepository repository = new WatchlistRepository();
                 observableMovies.clear();
                 observableMovies.addAll(repository.getMoviesFromWatchlist());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
+            }catch (Exception e){
+
             }
         });
 

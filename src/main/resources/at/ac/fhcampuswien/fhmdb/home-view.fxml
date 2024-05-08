@@ -57,5 +57,4 @@
       <JFXListView fx:id="movieListView" styleClass="background-black" style="-fx-background-color: black;" stylesheets="@styles.css" />
       <JFXListView fx:id="watchlistView" styleClass="background-black" style="-fx-background-color: black;" stylesheets="@styles.css" visible="false" />
    </StackPane>
-
 </VBox>
