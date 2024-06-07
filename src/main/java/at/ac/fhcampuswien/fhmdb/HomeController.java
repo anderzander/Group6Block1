@@ -151,10 +151,11 @@ public class HomeController implements Initializable {
         // either set event handlers in the fxml file (onAction) or add them here
 
 
-        // Sort button example:
+
         sortBtn.setOnAction(sortEvent -> {
-            sortObservableMovies(sortBtn.getText());
+            sortObservableMovies();
         });
+
 
         resetBtn.setOnAction(actionEvent -> {
             //TODO Text isn't grey!!
@@ -172,10 +173,11 @@ public class HomeController implements Initializable {
             }
 
             observableMovies.addAll(allMovies);
-
-            movieListView.setItems(observableMovies);// set data of observable list to list view
-
+            movieSort.setState(unsortedState); // Initial auf unsorted setzen
+            movieSort.sort(observableMovies);   // Hier sortieren
+            movieListView.setItems(observableMovies);   // set data of observable list to list view
             movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
+
         });
 
         searchBtn.setOnAction(sortEvent -> {
@@ -247,22 +249,20 @@ public class HomeController implements Initializable {
     }
 
 
-    public void sortObservableMovies(String textFromSortBtn) {
-        if (textFromSortBtn.equals("Sort (asc)")) {
-            // TODO sort observableMovies ascending
-            Collections.sort(observableMovies);
-            if (sortBtn != null) {
-                sortBtn.setText("Sort (desc)");
-            }
-
+    public void sortObservableMovies() {
+        if (sortBtn.getText().equals("Sort (asc)")) {
+            movieSort.setState(ascendingSort);
+            sortBtn.setText("Sort (desc)");
+        } else if (sortBtn.getText().equals("Sort (desc)")) {
+            movieSort.setState(descendingSort);
+            sortBtn.setText("Unsorted");
         } else {
-            // TODO sort observableMovies descending
-            observableMovies.sort(Collections.reverseOrder());
-            if (sortBtn != null) {
-                sortBtn.setText("Sort (asc)");
-            }
+            movieSort.setState(unsortedState);
+            sortBtn.setText("Sort (asc)");
         }
+        movieSort.sort(observableMovies);
     }
+
 
     public void filterObservableMovies(String searchField, String genreComboBox) {
 
