@@ -57,7 +57,7 @@ class HomeControllerTest {
         homeController.getObservableMovies().addAll(homeController.allMovies);
 
         // when
-        homeController.sortObservableMovies("Sort (asc)");
+        homeController.sortObservableMovies();
 
         //then
         List<Movie> expected = new ArrayList<>();
@@ -90,7 +90,7 @@ class HomeControllerTest {
         homeController.getObservableMovies().addAll(homeController.allMovies);
 
         // when
-        homeController.sortObservableMovies("Sort (desc)");
+        homeController.sortObservableMovies();
 
         //then
         List<Movie> expected = new ArrayList<>();
