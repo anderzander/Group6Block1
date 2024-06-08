@@ -1,14 +1,18 @@
 package at.ac.fhcampuswien.fhmdb.sort;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 
 public class DescendingSort implements SortState {
     @Override
-    public List<Movie> sort(List<Movie> movies) {
-        Collections.sort(movies, Comparator.comparing(Movie::getTitle).reversed());
-        return movies;
+    public void sort(List<Movie> movies) {
+        List<Movie> sortedMovie = new ArrayList<>(movies).stream().sorted(Comparator.comparing(Movie::getTitle).reversed()).collect(Collectors.toList());
+        movies.clear();
+        movies.addAll(sortedMovie);
     }
 }

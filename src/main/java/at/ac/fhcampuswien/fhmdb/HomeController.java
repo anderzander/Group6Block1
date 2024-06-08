@@ -253,11 +253,8 @@ public class HomeController implements Initializable {
         if (sortBtn.getText().equals("Sort (asc)")) {
             movieSort.setState(ascendingSort);
             sortBtn.setText("Sort (desc)");
-        } else if (sortBtn.getText().equals("Sort (desc)")) {
-            movieSort.setState(descendingSort);
-            sortBtn.setText("Unsorted");
         } else {
-            movieSort.setState(unsortedState);
+            movieSort.setState(descendingSort);
             sortBtn.setText("Sort (asc)");
         }
         movieSort.sort(observableMovies);

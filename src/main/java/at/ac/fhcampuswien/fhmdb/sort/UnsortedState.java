@@ -5,8 +5,7 @@ import at.ac.fhcampuswien.fhmdb.models.Movie;
 
 public class UnsortedState implements SortState {
     @Override
-    public List<Movie> sort(List<Movie> movies) {
-        return movies;
+    public void sort(List<Movie> movies) {
+
     }
 }
-
