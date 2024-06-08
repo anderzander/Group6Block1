@@ -37,7 +37,7 @@ public class MovieCell extends ListCell<Movie> {
         super.updateItem(movie, empty);
 
         try {
-            watchlistRepository = new WatchlistRepository();
+            watchlistRepository = WatchlistRepository.getMovieRepository();
         } catch (DatabaseException e) {
             System.out.println("Couldn't create watchlistRepository in Moviecell");
         }

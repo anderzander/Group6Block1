@@ -10,13 +10,26 @@ import java.util.List;
 public class MovieRepository {
     private Dao<MovieEntity, Long> daoMovieRepo;
 
-    public MovieRepository() throws DatabaseException {
+    private static MovieRepository instance;
+
+    private MovieRepository() throws DatabaseException {
         try {
             this.daoMovieRepo = Database.getDatabase().getMovieDao();
         } catch (Exception e) {
             throw new DatabaseException("Error in MovieRepository",e);
         }
 
+    }
+
+    public static MovieRepository getMovieRepository() throws DatabaseException{
+        try {
+            if (instance == null){
+                instance = new MovieRepository();
+            }
+        } catch (DatabaseException e) {
+            throw new DatabaseException(e);
+        }
+        return instance;
     }
 
 

@@ -90,7 +90,7 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            moviesToDB = new MovieRepository();
+            moviesToDB = MovieRepository.getMovieRepository();
         } catch (DatabaseException e) {
             showErrorPopup("Couldn't create moviesToDB in HomeController", e.getMessage());
         } catch (Exception e) {
@@ -222,7 +222,7 @@ public class HomeController implements Initializable {
             inHomeNavigation = false;
 
             try {
-                WatchlistRepository repository = new WatchlistRepository();
+                WatchlistRepository repository = WatchlistRepository.getMovieRepository();
                 observableMovies.clear();
                 observableMovies.addAll(repository.getMoviesFromWatchlist());
             } catch (SQLException e) {
@@ -237,7 +237,7 @@ public class HomeController implements Initializable {
 
     public static void refreshWatchlist() {
         try {
-            WatchlistRepository repository = new WatchlistRepository();
+            WatchlistRepository repository = WatchlistRepository.getMovieRepository();
             observableMovies.clear();
             observableMovies.addAll(repository.getMoviesFromWatchlist());
         } catch (SQLException e) {

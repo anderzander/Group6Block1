@@ -14,13 +14,26 @@ import java.util.List;
 public class WatchlistRepository {
     private  Dao<WatchlistMovieEntity, Long> daoWatchlistRepo;
 
-    public WatchlistRepository() throws DatabaseException {
+    private static WatchlistRepository instance;
+
+    private WatchlistRepository() throws DatabaseException {
         try {
             this.daoWatchlistRepo = Database.getDatabase().getWatchlistDao();
         } catch (DatabaseException e) {
             throw new DatabaseException("GetDatabase didn't work properly", e);
         }
 
+    }
+
+    public static WatchlistRepository getMovieRepository() throws DatabaseException{
+        try {
+            if (instance == null){
+                instance = new WatchlistRepository();
+            }
+        } catch (DatabaseException e) {
+            throw new DatabaseException(e);
+        }
+        return instance;
     }
 
     public  List<WatchlistMovieEntity> getWatchlist() throws SQLException {
