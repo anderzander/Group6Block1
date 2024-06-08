@@ -5,6 +5,7 @@ import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.*;
+import at.ac.fhcampuswien.fhmdb.observer.Observer;
 import at.ac.fhcampuswien.fhmdb.sort.AscendingSort;
 import at.ac.fhcampuswien.fhmdb.sort.DescendingSort;
 import at.ac.fhcampuswien.fhmdb.sort.MovieSort;
@@ -13,6 +14,7 @@ import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,7 +31,7 @@ import java.util.stream.Collectors;
 import static at.ac.fhcampuswien.fhmdb.database.MovieEntity.toMovies;
 
 
-public class HomeController implements Initializable {
+public class HomeController implements Initializable, Observer {
 
 
     @FXML
@@ -69,7 +71,7 @@ public class HomeController implements Initializable {
     private AscendingSort ascendingSort = new AscendingSort();
     private DescendingSort descendingSort = new DescendingSort();
     private UnsortedState unsortedState = new UnsortedState();
-
+    private WatchlistRepository watchlistRepository;
 
     private static ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
@@ -347,6 +349,26 @@ public class HomeController implements Initializable {
 
 
     }
+    public HomeController() {
+        try {
+            watchlistRepository = WatchlistRepository.getMovieRepository();
+            watchlistRepository.addObserver(this);
+        } catch (DatabaseException e) {
+            showErrorPopup("Couldn't create WatchlistRepository in HomeController", e.getMessage());
+        }
+    }
+
+    @Override
+    public void update(Movie movie, String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Watchlist Update");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
+
 
     public void showErrorPopup(String error, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

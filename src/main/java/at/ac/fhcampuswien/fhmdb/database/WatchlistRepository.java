@@ -2,19 +2,19 @@ package at.ac.fhcampuswien.fhmdb.database;
 
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.observer.Observable;
+import at.ac.fhcampuswien.fhmdb.observer.Observer;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WatchlistRepository {
-    private  Dao<WatchlistMovieEntity, Long> daoWatchlistRepo;
-
+public class WatchlistRepository implements Observable {
+    private Dao<WatchlistMovieEntity, Long> daoWatchlistRepo;
     private static WatchlistRepository instance;
+    private final List<Observer> observers = new ArrayList<>();
 
     private WatchlistRepository() throws DatabaseException {
         try {
@@ -22,21 +22,16 @@ public class WatchlistRepository {
         } catch (DatabaseException e) {
             throw new DatabaseException("GetDatabase didn't work properly", e);
         }
-
     }
 
-    public static WatchlistRepository getMovieRepository() throws DatabaseException{
-        try {
-            if (instance == null){
-                instance = new WatchlistRepository();
-            }
-        } catch (DatabaseException e) {
-            throw new DatabaseException(e);
+    public static WatchlistRepository getMovieRepository() throws DatabaseException {
+        if (instance == null) {
+            instance = new WatchlistRepository();
         }
         return instance;
     }
 
-    public  List<WatchlistMovieEntity> getWatchlist() throws SQLException {
+    public List<WatchlistMovieEntity> getWatchlist() throws SQLException {
         return daoWatchlistRepo.queryForAll();
     }
 
@@ -48,28 +43,21 @@ public class WatchlistRepository {
     public void saveWatchlistEntityIfNotInDB(Movie movie) throws SQLException {
         if (!watchlistExistsInDB(movie.getMovieID())) {
             daoWatchlistRepo.create(new WatchlistMovieEntity(movie));
-            System.out.println("Inserted new movie: " + movie.getTitle());
+            notifyObservers(movie, "Movie added to watchlist: " + movie.getTitle());
         } else {
-            System.out.println("Movie already exists: " + movie.getTitle());
+            notifyObservers(movie, "Movie already in watchlist: " + movie.getTitle());
         }
-
-    }
-
-    public Dao<WatchlistMovieEntity, Long> getDaoWatchlistRepo() {
-        return daoWatchlistRepo;
     }
 
     public void removeFromWatchlist(Movie movie) throws SQLException {
         DeleteBuilder<WatchlistMovieEntity, Long> deleteBuilder = daoWatchlistRepo.deleteBuilder();
         deleteBuilder.where().eq("apiId", movie.getMovieID());
         deleteBuilder.delete();
+        notifyObservers(movie, "Movie removed from watchlist: " + movie.getTitle());
     }
 
-    public  List<Movie> getMoviesFromWatchlist() throws SQLException, DatabaseException {
-
+    public List<Movie> getMoviesFromWatchlist() throws SQLException, DatabaseException {
         Dao<MovieEntity, Long> daoMovieRepo = Database.getDatabase().getMovieDao();
-
-
         List<MovieEntity> entities = new ArrayList<>();
 
         for (WatchlistMovieEntity entity : this.getWatchlist()) {
@@ -78,12 +66,27 @@ public class WatchlistRepository {
         }
 
         List<Movie> moviesFromWatchlist = new ArrayList<>();
-        for (MovieEntity entity: entities) {
+        for (MovieEntity entity : entities) {
             moviesFromWatchlist.add(new Movie(entity));
         }
 
         return moviesFromWatchlist;
     }
 
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
 
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(Movie movie, String message) {
+        for (Observer observer : observers) {
+            observer.update(movie, message);
+        }
+    }
 }
