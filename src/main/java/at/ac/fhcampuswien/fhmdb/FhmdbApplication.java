@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.models.MovieApiRequestBuilder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,5 +24,6 @@ public class FhmdbApplication extends Application {
 
     public static void main(String[] args) throws IOException {
         launch();
+
     }
 }

@@ -4,10 +4,7 @@ import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
-import at.ac.fhcampuswien.fhmdb.models.Genre;
-import at.ac.fhcampuswien.fhmdb.models.Movie;
-import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
-import at.ac.fhcampuswien.fhmdb.models.Rating;
+import at.ac.fhcampuswien.fhmdb.models.*;
 import at.ac.fhcampuswien.fhmdb.sort.AscendingSort;
 import at.ac.fhcampuswien.fhmdb.sort.DescendingSort;
 import at.ac.fhcampuswien.fhmdb.sort.MovieSort;
@@ -66,14 +63,12 @@ public class HomeController implements Initializable {
     static boolean inHomeNavigation = true;
 
 
-
     public static List<Movie> allMovies = new ArrayList<>();
     public static List<Integer> releaseYearList = new ArrayList<>();
     private MovieSort movieSort = new MovieSort();
     private AscendingSort ascendingSort = new AscendingSort();
     private DescendingSort descendingSort = new DescendingSort();
     private UnsortedState unsortedState = new UnsortedState();
-
 
 
     private static ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
@@ -85,10 +80,11 @@ public class HomeController implements Initializable {
         return observableMovies;
     }
 
-    public  static boolean isInHomeNavigation() {
+    public static boolean isInHomeNavigation() {
         return inHomeNavigation;
     }
 
+    static final String base = "https://prog2.fh-campuswien.ac.at/movies";
 
 
     @Override
@@ -131,7 +127,6 @@ public class HomeController implements Initializable {
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
 
 
-
         // TODO add genre filter items with genreComboBox.getItems().addAll(...)
         genreComboBox.setPromptText("Filter by Genre");
         genreComboBox.getItems().addAll(Genre.values());
@@ -149,7 +144,6 @@ public class HomeController implements Initializable {
 
         // TODO add event handlers to buttons and call the regarding methods
         // either set event handlers in the fxml file (onAction) or add them here
-
 
 
         sortBtn.setOnAction(sortEvent -> {
@@ -183,8 +177,11 @@ public class HomeController implements Initializable {
         searchBtn.setOnAction(sortEvent -> {
 
             try {
-                allMovies = MovieAPI.getMoviesFromApi(MovieAPI.urlForFilteredList(releaseYearComboBox.getValue(), ratingComboBox.getValue()));
-                System.out.println(MovieAPI.urlForFilteredList(releaseYearComboBox.getValue(), ratingComboBox.getValue()));
+                //allMovies = MovieAPI.getMoviesFromApi(MovieAPI.urlForFilteredList(releaseYearComboBox.getValue(), ratingComboBox.getValue()));
+                allMovies = MovieAPI.getMoviesFromApi(new MovieApiRequestBuilder(base)
+                        .releaseYear(releaseYearComboBox.getValue())
+                        .ratingFrom(ratingComboBox.getValue())
+                        .build());
             } catch (MovieApiException e) {
                 showErrorPopup("Couldn't get movies from API", e.getMessage());
             }
@@ -238,14 +235,15 @@ public class HomeController implements Initializable {
 
     }
 
-    public static void refreshWatchlist(){
+    public static void refreshWatchlist() {
         try {
             WatchlistRepository repository = new WatchlistRepository();
             observableMovies.clear();
             observableMovies.addAll(repository.getMoviesFromWatchlist());
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } catch (Exception e){}
+        } catch (Exception e) {
+        }
     }
 
 
