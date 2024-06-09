@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.builder.MovieApiRequestBuilder;
 import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
@@ -180,11 +181,12 @@ public class HomeController implements Initializable, Observer {
         searchBtn.setOnAction(sortEvent -> {
 
             try {
-                //allMovies = MovieAPI.getMoviesFromApi(MovieAPI.urlForFilteredList(releaseYearComboBox.getValue(), ratingComboBox.getValue()));
-                allMovies = MovieAPI.getMoviesFromApi(new MovieApiRequestBuilder(base)
-                        .releaseYear(releaseYearComboBox.getValue())
-                        .ratingFrom(ratingComboBox.getValue())
-                        .build());
+                allMovies = MovieAPI.getMoviesFromApi(
+                        new MovieApiRequestBuilder(base)
+                                .releaseYear(releaseYearComboBox.getValue())
+                                .ratingFrom(ratingComboBox.getValue())
+                                .build()
+                );
             } catch (MovieApiException e) {
                 showErrorPopup("Couldn't get movies from API", e.getMessage());
             }
@@ -355,6 +357,7 @@ public class HomeController implements Initializable, Observer {
 
 
     }
+
     public HomeController() {
         try {
             watchlistRepository = WatchlistRepository.getMovieRepository();

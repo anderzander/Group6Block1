@@ -1,4 +1,4 @@
-package at.ac.fhcampuswien.fhmdb.models;
+package at.ac.fhcampuswien.fhmdb.builder;
 
 public class MovieApiRequestBuilder {
     private String base;
@@ -8,7 +8,7 @@ public class MovieApiRequestBuilder {
     private Object ratingFrom;
 
 
-    public MovieApiRequestBuilder(String base){
+    public MovieApiRequestBuilder(String base) {
         this.base = base;
     }
 
@@ -33,25 +33,37 @@ public class MovieApiRequestBuilder {
         return this;
     }
 
-    public String build(){
+    public String build() {
 
         StringBuilder urlBuilder = new StringBuilder(base);
         boolean isFirstParam = true;
 
         if (query != null) {
-            urlBuilder.append(isFirstParam ? "?" : "&").append("query=").append(query);
+            urlBuilder
+                    .append(isFirstParam ? "?" : "&")
+                    .append("query=")
+                    .append(query);
             isFirstParam = false;
         }
         if (genre != null) {
-            urlBuilder.append(isFirstParam ? "?" : "&").append("genre=").append(genre);
+            urlBuilder
+                    .append(isFirstParam ? "?" : "&")
+                    .append("genre=")
+                    .append(genre);
             isFirstParam = false;
         }
         if (releaseYear != null) {
-            urlBuilder.append(isFirstParam ? "?" : "&").append("releaseYear=").append(Integer.toString((Integer)releaseYear));
+            urlBuilder
+                    .append(isFirstParam ? "?" : "&")
+                    .append("releaseYear=")
+                    .append(Integer.toString((Integer) releaseYear));
             isFirstParam = false;
         }
         if (ratingFrom != null) {
-            urlBuilder.append(isFirstParam ? "?" : "&").append("ratingFrom=").append(Double.toString((Double)ratingFrom));
+            urlBuilder
+                    .append(isFirstParam ? "?" : "&")
+                    .append("ratingFrom=")
+                    .append(Double.toString((Double) ratingFrom));
         }
 
         return urlBuilder.toString();
