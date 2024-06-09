@@ -196,7 +196,11 @@ public class HomeController implements Initializable, Observer {
                 filterObservableMovies(searchField.getText(), null);
             }
 
+            movieSort.sort(observableMovies);
+
         });
+
+
         homeBtn.setOnAction(actionEvent -> {
             releaseYearComboBox.setVisible(true);
             ratingComboBox.setVisible(true);
@@ -212,6 +216,7 @@ public class HomeController implements Initializable, Observer {
             inHomeNavigation = true;
             observableMovies.clear();
             observableMovies.addAll(allMovies);
+            movieSort.sort(observableMovies);
 
 
         });
@@ -233,6 +238,7 @@ public class HomeController implements Initializable, Observer {
             } catch (Exception e) {
 
             }
+            movieSort.sort(observableMovies);
         });
 
 
@@ -278,7 +284,6 @@ public class HomeController implements Initializable, Observer {
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
 
         observableMovies = finishedFilteredList;
-
     }
 
     public List<Movie> listFilteredByGenres(List<Movie> MovieListToFilter, String genreComboBox) {

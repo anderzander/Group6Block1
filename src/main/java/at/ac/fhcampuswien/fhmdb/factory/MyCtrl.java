@@ -1,4 +1,4 @@
-package at.ac.fhcampuswien.fhmdb;
+package at.ac.fhcampuswien.fhmdb.factory;
 
 public class MyCtrl {
     private static MyCtrl instance;
