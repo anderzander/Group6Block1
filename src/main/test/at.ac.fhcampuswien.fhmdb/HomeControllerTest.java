@@ -2,6 +2,9 @@ package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.sort.AscendingSort;
+import at.ac.fhcampuswien.fhmdb.sort.DescendingSort;
+import at.ac.fhcampuswien.fhmdb.sort.MovieSort;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -90,7 +93,10 @@ class HomeControllerTest {
         homeController.getObservableMovies().addAll(homeController.allMovies);
 
         // when
-        homeController.sortObservableMovies();
+        MovieSort movieSort = new MovieSort();
+        movieSort.setState( new DescendingSort());
+        movieSort.sort(homeController.getObservableMovies());
+        //homeController.sortObservableMovies();
 
         //then
         List<Movie> expected = new ArrayList<>();

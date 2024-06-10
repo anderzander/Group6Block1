@@ -24,7 +24,7 @@ public class WatchlistRepository implements Observable {
         }
     }
 
-    public static WatchlistRepository getMovieRepository() throws DatabaseException {
+    public static WatchlistRepository getWatchlistRepository() throws DatabaseException {
         if (instance == null) {
             instance = new WatchlistRepository();
         }

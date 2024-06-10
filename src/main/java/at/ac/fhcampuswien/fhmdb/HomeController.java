@@ -232,7 +232,7 @@ public class HomeController implements Initializable, Observer {
             inHomeNavigation = false;
 
             try {
-                WatchlistRepository repository = WatchlistRepository.getMovieRepository();
+                WatchlistRepository repository = WatchlistRepository.getWatchlistRepository();
                 observableMovies.clear();
                 observableMovies.addAll(repository.getMoviesFromWatchlist());
             } catch (SQLException e) {
@@ -248,7 +248,7 @@ public class HomeController implements Initializable, Observer {
 
     public static void refreshWatchlist() {
         try {
-            WatchlistRepository repository = WatchlistRepository.getMovieRepository();
+            WatchlistRepository repository = WatchlistRepository.getWatchlistRepository();
             observableMovies.clear();
             observableMovies.addAll(repository.getMoviesFromWatchlist());
         } catch (SQLException e) {
@@ -360,7 +360,7 @@ public class HomeController implements Initializable, Observer {
 
     public HomeController() {
         try {
-            watchlistRepository = WatchlistRepository.getMovieRepository();
+            watchlistRepository = WatchlistRepository.getWatchlistRepository();
             watchlistRepository.addObserver(this);
         } catch (DatabaseException e) {
             showErrorPopup("Couldn't create WatchlistRepository in HomeController", e.getMessage());

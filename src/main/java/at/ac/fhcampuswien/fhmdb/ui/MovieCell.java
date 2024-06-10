@@ -1,16 +1,10 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
-import at.ac.fhcampuswien.fhmdb.HomeController;
-import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import at.ac.fhcampuswien.fhmdb.database.Database;
-import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
@@ -37,7 +31,7 @@ public class MovieCell extends ListCell<Movie> {
         super.updateItem(movie, empty);
 
         try {
-            watchlistRepository = WatchlistRepository.getMovieRepository();
+            watchlistRepository = WatchlistRepository.getWatchlistRepository();
         } catch (DatabaseException e) {
             System.out.println("Couldn't create watchlistRepository in Moviecell");
         }
