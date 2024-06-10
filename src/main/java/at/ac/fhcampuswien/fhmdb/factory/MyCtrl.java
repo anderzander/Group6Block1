@@ -1,13 +1,17 @@
 package at.ac.fhcampuswien.fhmdb.factory;
 
+import at.ac.fhcampuswien.fhmdb.HomeController;
+import javafx.fxml.FXMLLoader;
+
 public class MyCtrl {
     private static MyCtrl instance;
+
+    private FXMLLoader loader;
 
     private MyCtrl() {
 
     }
 
-    // Statische Methode, um die Singleton-Instanz abzurufen
     public static MyCtrl getInstance() {
         if (instance == null) {
             synchronized (MyCtrl.class) {
